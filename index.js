@@ -1,7 +1,7 @@
 'use strict'
 
 const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/discover/movie?';
-const YELP_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
+const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 
 function getDataFromTMDBApi (searchTerm, callback){
   const query = {
@@ -14,7 +14,7 @@ function getDataFromTMDBApi (searchTerm, callback){
   $.getJSON(TMDB_SEARCH_URL, query, callback);
 }
 
-function getDataFromYELPApi (searchTerm, callback){
+function getDataFromFOURSQUAREApi (searchTerm, callback){
   const query = {
     client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
     client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
@@ -23,7 +23,7 @@ function getDataFromYELPApi (searchTerm, callback){
     v: '20180323',
     limit: 1
   }
-  $.getJSON(YELP_SEARCH_URL, query, callback);
+  $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
 
 
@@ -53,7 +53,7 @@ function displayTMDBSearchData(data) {
   $('.js-movie-result').html(results);
 }
 
-function displayYELPSearchData(data) {
+function displayFOURSQUARESearchData(data) {
   const groupsObj = data.response.groups[0];
   const topThree = groupsObj.items.slice(0,3)
   const results = topThree.map((item, index)=>renderRestaurantResult(item));
@@ -70,7 +70,7 @@ function watchSubmit () {
 
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
     const zipCode = zipCodeQueryTarget.val();
-    getDataFromYELPApi(zipCode, displayYELPSearchData);
+    getDataFromFOURSQUAREApi(zipCode, displayFOURSQUARESearchData);
     console.log(zipCode);
 
   });
