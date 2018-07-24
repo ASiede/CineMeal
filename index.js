@@ -1,7 +1,7 @@
 'use strict'
 
 const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/discover/movie?';
-const YELP_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
+const YELP_SEARCH_URL = 'https://api.yelp.com/v3/businesses/search';
 
 function getDataFromTMDBApi (searchTerm, callback){
   const query = {
@@ -14,20 +14,23 @@ function getDataFromTMDBApi (searchTerm, callback){
   $.getJSON(TMDB_SEARCH_URL, query, callback);
 }
 
-function getDataFromYELPApi (searchTerm, callback){
-  const query = {
-    client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
-    client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
-    near: `${searchTerm}`,
-    query: 'coffee',
-    v: '20180323',
-    limit: 1
-  }
-  $.getJSON(YELP_SEARCH_URL, query, callback);
+function getDataFromYELPApi (searchTerm, callback){ 
+  const settings = {
+    url: YELP_SEARCH_URL,
+    data: {
+      term: 'restaurants',
+      location: `${searchTerm}`
+      },
+    dataType: 'json',
+    type: 'GET',
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ehxJJvvLmFr-IDfPqVZjlA0YDT3jvqiuIOIXzdgFR_vOGVUOk1YhPWNnw_KgI-nWhcQLKQScWrCDIl2DmZN5xdJUHxD7p8BKBhnlV1v5AYKHgUjWRR01nBY3K3pWW3Yx');
+    },
+    success: callback
+    };
+
+  $.ajax(settings);
 }
-
-
-//https://api.foursquare.com/v2/venues/explore?client_id=K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD&client_secret=AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS&ll=40.7243,-74.0018&query=coffee&v=20180323&limit=1
 
 function renderMovieResult (result) {
   return `
@@ -41,7 +44,7 @@ function renderMovieResult (result) {
 function renderRestaurantResult (result) {
   return `
   <div>
-    <h2>${result.venue.name}</h2>
+    <h2>${result.name}</h2>
     <p></p>
   </div>
   `;
@@ -54,10 +57,9 @@ function displayTMDBSearchData(data) {
 }
 
 function displayYELPSearchData(data) {
-  const groupsObj = data.response.groups[0];
-  const topThree = groupsObj.items.slice(0,3)
+  console.log(data);
+  const topThree = data.businesses.slice(0,3);
   const results = topThree.map((item, index)=>renderRestaurantResult(item));
-  //render result
   $('.js-restaurant-result').html(results);
 }
 
