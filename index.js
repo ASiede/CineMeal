@@ -9,7 +9,8 @@ function getDataFromTMDBApi (searchTerm, callback){
     api_key: '0d004f603b5e46bc91ac76e45f1a3078',
     'primary_release_date.gte':'2018-06-22',
     'primary_release_date.lte':'2018-07-22',
-    sort_by: 'popularity.desc'
+    sort_by: 'popularity.desc',
+
   }
   $.getJSON(TMDB_SEARCH_URL, query, callback);
 }
@@ -19,9 +20,9 @@ function getDataFromFOURSQUAREApi (searchTerm, callback){
     client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
     client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
     near: `${searchTerm}`,
-    query: 'coffee',
+    query: 'restaurant',
     v: '20180323',
-    limit: 1
+    limit: 3
   }
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
@@ -51,13 +52,13 @@ function displayTMDBSearchData(data) {
   const topThree = data.results.slice(0,3);
   const results = topThree.map((item, index)=>renderMovieResult(item));
   $('.js-movie-result').html(results);
+  console.log(data);
 }
 
 function displayFOURSQUARESearchData(data) {
   const groupsObj = data.response.groups[0];
-  const topThree = groupsObj.items.slice(0,3)
-  const results = topThree.map((item, index)=>renderRestaurantResult(item));
-  //render result
+  const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
+  console.log(data);
   $('.js-restaurant-result').html(results);
 }
 
