@@ -8,32 +8,44 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>    
   </head>
   <body>
-    <h1>Plan a Date Night!</h1>
-    
-    <form action="#" class="js-search-form">
-      <select class="js-genre-query" name="genre">
-      	<option value="18">Drama</option>
-      	<option value="35">Comedy</option>
-      	<option value="27">Horror</option>
-        <option value="10749">Romantic</option>
-        <option value="10751">Family</option>
-        <option value="28">Action</option>
-      </select><br>
+    <header>
+      <h1>Welcome to the Dinner and a Movie Chooser</h1>
+    </header>
+    <p class='explaination'>Need a little help deciding on what to do tonight? We've got you covered. Just let us know what kind of movie you'd like to see and you location and we will give you several options of a top rated movie currently in theatres and top rated restaurant in your area that we thing will pair nicely with you movie.</p>
 
-      <label for="js-zip-code-query">Zip Code</label>
-      <input class="js-zip-code-query" type="text" placeholder="97214">
-      
-      <button type='submit'>Go!</button>	
-    </form>
+    <button class ='js-begin' type='submit'>Let's Begin</button>
 
-    <h2>Results</h2>
-    <div class="js-movie-result">
+    <div class='user-input'>
+      <form action="#" class="js-search-form" id= 'user-input' hidden>
+        
+        <input type="radio" name="genre" id="drama" value="18">
+        <label for="drama">Drama</label><br>
+        <input type="radio" name="genre" id="comedy" value="35">
+        <label for="comedy">Comedy</label><br>
+        <input type="radio" name="genre" id="horror" value="27">
+        <label for="horror">Horror</label><br>
+        <input type="radio" name="genre" id="romantic" value="10749">
+        <label for="romantic">Romantic</label><br>
+        <input type="radio" name="genre" id="family" value="10751">
+        <label for="family">Family</label><br>
+        <input type="radio" name="genre" id="action" value="28">
+        <label for="action">Action</label><br>
+        <label for="js-zip-code-query">Zip Code</label>
+        <input class="js-zip-code-query" type="text" placeholder="97214"><br>
+        
+        <button type='submit'>Go!</button>	
+      </form>
+    </div>  
 
+    <div class="js-movie-result" hidden>
+      <h2>Movie Results</h2>
+    </div>
+    <div class="js-restaurant-result" hidden>
+      <h2>Restaurant Results</h2>	
     </div>
 
-    <div class="js-restaurant-result">
-    	
-    </div>
+    <button class='restart' type='reset' form='user-input' hidden>Restart</button>
+
     <script src="index.js"></script>
   </body>
 </html>
