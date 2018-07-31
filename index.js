@@ -19,7 +19,6 @@ console.log(ISODate);
 
 function handleBeginButton() {
   $('.js-begin').on('click', event=>{
-    event.preventDefault();
     renderBeginResults();
     });
 }
@@ -27,8 +26,7 @@ function handleBeginButton() {
 function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
   $('header').html("<h1>Dinner and a Movie Chooser</h1>");
-  $('.explaination').prop('hidden', true);
-  $('.js-begin').prop("hidden", true);
+  $('.initial-page').prop('hidden', true);
 }
 
 
@@ -80,7 +78,7 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
 
 function renderMovieResult(result) {
   return `
-  <div>
+  <div class='movie-results'>
     <h3>${result.title}</h3>
     <p>${result.overview}</p>
   </div>
@@ -91,10 +89,9 @@ function renderMovieResult(result) {
 
 function renderRestaurantResult(result) {
   return `
-  <div>
+  <div class='restaurant-results'>
     <h3>${result.venue.name}</h3>
     <p>${result.venue.location.formattedAddress[0]}</p>
-    <p></p>
   </div>
   `;
 }
@@ -114,6 +111,12 @@ function displayFOURSQUARESearchData(data) {
   console.log(data);
 }
 
+function showResultsinDOM () {
+  $('.results-section').prop('hidden', false)
+  $('.restart').prop('hidden', false);
+  $('form').prop('hidden', true);
+}
+
 function watchSubmit () {
   $('.js-search-form').submit(event => {
     event.preventDefault();
@@ -128,11 +131,7 @@ function watchSubmit () {
     const restaurantCatagory = genreToFoodCatagory[genre];
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
 
-    $('.js-movie-result').prop('hidden', false);
-    $('.js-restaurant-result').prop('hidden', false);
-    $('.restart').prop('hidden', false);
-
-    $('form').prop('hidden', true);
+    showResultsinDOM();
 
   });
 }
@@ -141,13 +140,12 @@ function watchSubmit () {
 
 function handleAppRestart(){
   $('.restart').on('click', function(){
-    $('.js-movie-result').prop('hidden', true);
-    $('.js-restaurant-result').prop('hidden', true);
+    $('.results-section').prop('hidden', true);
     $('.restart').prop('hidden', true);
-    $('.js-search-form').prop('hidden', true);
     $('header').html("<h1>Welcome to the Dinner and a Movie Chooser</h1>");
-    $('.explaination').prop('hidden', false);
-    $('.js-begin').prop("hidden", false);
+    $('.initial-page').prop('hidden', false)
+    $('.movie-results').remove();
+    $('.restaurant-results').remove();
 
   })
 }

@@ -1,0 +1,117 @@
+
+* {
+	box-sizing: border-box;
+}
+body {
+	background-color: lightgrey;
+	color: white;
+	text-align: center;
+}
+header {
+	border: black solid 1px;
+	text-align: center;
+	background-color: #191919;
+}
+
+.initial-page p {
+	text-align: center;
+	padding: 10px;
+}
+
+/*.user-input [type='radio'] {
+	visibility: hidden;
+}*/
+
+label {
+
+}
+
+.genre-radio-button {
+	/*border: black solid 1px;*/
+	display: inline-block;
+	padding: 30px;
+	background-color: #B0CDD9;
+	margin: 5px;
+	border-radius: 10%;
+}
+
+input[type='radio'] {
+	margin-left: 0;
+}
+
+input[type="radio"]:checked+label {
+  background-color: orange;
+}
+
+span {
+	font-size: 7em;
+}
+
+[type='radio']:checked {
+	background-color: orange;
+	border: red 5px solid;
+}
+
+.user-input {
+	margin-left: auto;
+	margin-right: auto;
+	/*border: solid red 1px;*/
+	text-align: center;
+}
+
+form button {
+	margin: 20px 0px;
+}
+
+.movie-results, .restaurant-results {
+	/*border: green solid 3px;*/
+	border-radius: 5%;
+	height: 200px;
+	overflow:scroll;
+	text-align: center;
+	margin: 10px;
+	
+}
+.movie-results {
+	background-color: #BCC9A5; 
+}
+
+.restaurant-results {
+	background-color: #456575; 
+}
+
+.movie-result-section, .restaurant-result-section {
+	/*border: blue solid 5px;*/
+	width:48%;
+	display: inline-block;
+
+}
+
+
+.results-section {
+	/*border: purple solid 5px;*/
+	margin: 30px;
+}
+
+h3 {
+	text-align: center;
+}
+
+h4 {
+	min-height: : 75px;
+	text-align: center;
+}
+
+.restart {
+	margin-bottom: 50px;
+}
+
+/*colors
+
+#191919
+8C606D
+456575
+F19568
+6C855E
+F5BF66
+*/
