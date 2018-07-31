@@ -15,18 +15,19 @@ console.log(today);
 
 
 console.log(ISODate);
-// lets begin event
 
-function handleBeginButton() {
-  $('.js-begin').on('click', event=>{
-    renderBeginResults();
-    });
-}
+// lets begin event
 
 function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
   $('header').html("<h1>Dinner and a Movie Chooser</h1>");
   $('.initial-page').prop('hidden', true);
+}
+
+function handleBeginButton() {
+  $('.js-begin').on('click', event=>{
+    renderBeginResults();
+    });
 }
 
 
@@ -79,7 +80,7 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
 function renderMovieResult(result) {
   return `
   <div class='movie-results'>
-    <h3>${result.title}</h3>
+    <h4>${result.title}</h4>
     <p>${result.overview}</p>
   </div>
   `;
@@ -90,7 +91,7 @@ function renderMovieResult(result) {
 function renderRestaurantResult(result) {
   return `
   <div class='restaurant-results'>
-    <h3>${result.venue.name}</h3>
+    <h4>${result.venue.name}</h4>
     <p>${result.venue.location.formattedAddress[0]}</p>
   </div>
   `;
@@ -99,31 +100,27 @@ function renderRestaurantResult(result) {
 function displayTMDBSearchData(data) {
   const topThree = data.results.slice(0,3);
   const results = topThree.map((item, index)=>renderMovieResult(item));
-  $('.js-movie-result').html(results);
-  console.log('movie');
-  console.log(data);
+  $('.js-movie-result h3').append(results);
 }
 
 function displayFOURSQUARESearchData(data) {
   const groupsObj = data.response.groups[0];
   const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
-  $('.js-restaurant-result').html(results);
-  console.log(data);
+  $('.js-restaurant-result h3').append(results);
 }
 
-function showResultsinDOM () {
+function showResultsinDOM() {
   $('.results-section').prop('hidden', false)
   $('.restart').prop('hidden', false);
   $('form').prop('hidden', true);
 }
 
-function watchSubmit () {
+function watchSubmit() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
     let genreQueryTarget = $(event.currentTarget).find("input[type='radio']:checked");
     const genreId = genreQueryTarget.val();
     const genre = idToGenre[genreId];
-    console.log(genre);
     getDataFromTMDBApi(genreId, displayTMDBSearchData);
 
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
@@ -150,6 +147,10 @@ function handleAppRestart(){
   })
 }
 
-$(handleAppRestart);
-$(handleBeginButton);
-$(watchSubmit);
+function init() {
+  $(handleAppRestart);
+  $(handleBeginButton);
+  $(watchSubmit);
+}
+
+$(init);
