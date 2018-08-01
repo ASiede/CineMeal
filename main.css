@@ -19,12 +19,9 @@ header {
 	padding: 10px;
 }
 
-/*.user-input [type='radio'] {
+/*Is below still aria friendly??*/
+.user-input [type='radio'] {
 	visibility: hidden;
-}*/
-
-label {
-
 }
 
 .genre-radio-button {
@@ -47,10 +44,14 @@ input[type="radio"]:checked+label {
 span {
 	font-size: 7em;
 }
-
-[type='radio']:checked {
+/*
+.genre-radio-button input[type='radio']:checked ~ .genre-h {
 	background-color: orange;
 	border: red 5px solid;
+}*/
+
+.genre-selected {
+	background-color: red;
 }
 
 .user-input {
@@ -105,6 +106,10 @@ h4 {
 
 .restart {
 	margin-bottom: 50px;
+}
+
+.result-selected {
+	background-color: red;
 }
 
 /*colors

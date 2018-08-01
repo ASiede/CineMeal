@@ -10,14 +10,19 @@ const fullISODate = today.toISOString();
 const ISODate = fullISODate.substr(0,10);
 
 console.log(today);
-
-// const monthAgo = ISODate.setMonth(ISODate.getMonth() - 1);
-
-
 console.log(ISODate);
 
-// lets begin event
+function createDateMonthAgo() {
+  const date = new Date(); 
+  const todayAMonthAgo = date.setMonth(date.getMonth() -1);
+  return date;    
+  }
+ 
+const fullISODateAMonthAgo = createDateMonthAgo().toISOString();
+const ISODateAMonthAgo = fullISODateAMonthAgo.substr(0,10);
+console.log(ISODateAMonthAgo);
 
+// lets begin event
 function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
   $('header').html("<h1>Dinner and a Movie Chooser</h1>");
@@ -56,7 +61,7 @@ function getDataFromTMDBApi(genreId, callback) {
   const query = {
     with_genres: `${genreId}`,
     api_key: '0d004f603b5e46bc91ac76e45f1a3078',
-    'primary_release_date.gte':'2018-06-22',
+    'primary_release_date.gte':`${ISODateAMonthAgo}`,
     'primary_release_date.lte':`${ISODate}`,
     sort_by: 'popularity.desc',
   }
@@ -79,7 +84,7 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
 
 function renderMovieResult(result) {
   return `
-  <div class='movie-results'>
+  <div role='button' class='movie-results'>
     <h4>${result.title}</h4>
     <p>${result.overview}</p>
   </div>
@@ -90,7 +95,7 @@ function renderMovieResult(result) {
 
 function renderRestaurantResult(result) {
   return `
-  <div class='restaurant-results'>
+  <div role='button' class='restaurant-results'>
     <h4>${result.venue.name}</h4>
     <p>${result.venue.location.formattedAddress[0]}</p>
   </div>
@@ -113,6 +118,7 @@ function showResultsinDOM() {
   $('.results-section').prop('hidden', false)
   $('.restart').prop('hidden', false);
   $('form').prop('hidden', true);
+  $('.find-out-more').prop('hidden', false)
 }
 
 function watchSubmit() {
@@ -130,6 +136,7 @@ function watchSubmit() {
 
     showResultsinDOM();
 
+
   });
 }
 
@@ -143,14 +150,70 @@ function handleAppRestart(){
     $('.initial-page').prop('hidden', false)
     $('.movie-results').remove();
     $('.restaurant-results').remove();
-
+    $('.find-out-more').prop('hidden', true);
   })
 }
+
+//highlight chosen genre
+
+function highlightChosenGenre(){
+  $('.genre-radio-button').on('click', function(event){
+    event.preventDefault();
+    const targetGenre = $(event.currentTarget);
+    const otherGenres = $('.genre-radio-button').not(targetGenre);
+    otherGenres.removeClass('genre-selected');
+    targetGenre.toggleClass('genre-selected')
+    $(targetGenre).find('input').prop('checked', true);
+  })
+}
+
+//Select final paid
+
+function handleFinalMovieSelect(){
+  $('.js-movie-result').on('click', '.movie-results', function(event){
+    event.preventDefault();
+    const targetMovie = $(event.currentTarget);
+    const otherMovies = $('.movie-results').not(targetMovie);
+    otherMovies.removeClass('result-selected');
+    targetMovie.toggleClass('result-selected');
+  });
+}
+
+function handleFinalRestaurantSelect(){
+  $('.js-restaurant-result').on('click', '.restaurant-results', function(event){
+    event.preventDefault();
+    const targetRestaurant = $(event.currentTarget);
+    const otherRestaurants = $('.restaurant-results').not(targetRestaurant);
+    otherRestaurants.removeClass('result-selected');
+    targetRestaurant.toggleClass('result-selected');
+  });
+}
+
+function handleFindOutMore(){
+  $('.find-out-more').on('click', function() {
+    const movieResults = $('.js-movie-result').find('.movie-results');
+    console.log(movieResults);
+    console.log(movieResults.hasClass('.result-selected'));
+    if ( ($('.js-movie-result').find('.movie-results').hasClass('.result-selected')) && ($('.js-restaurant-result').find('.restaurant-results').hasClass('.result-selected')) ) {
+    //return just those two results
+      console.log('both selected');
+    } else {
+      $('.find-out-more').before('<p>Please select one movie and one restaurant</p>');
+  }});
+
+}
+
+
+
 
 function init() {
   $(handleAppRestart);
   $(handleBeginButton);
   $(watchSubmit);
+  $(handleFinalMovieSelect);
+  $(handleFinalRestaurantSelect);
+  $(handleFindOutMore);
+  $(highlightChosenGenre);
 }
 
 $(init);

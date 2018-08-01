@@ -11,15 +11,15 @@
   <body>
     <header>
       <h1>Welcome to the Dinner and a Movie Chooser</h1>
-    </header>
-    <div class='initial-page'>
+    </header role='banner'>
+    <main role='main' class='initial-page'>
       <p>Can't decide what to do tonight? Interested in dinner and a movie but not sure which ones? 
       <p>We've got you covered.</p> 
       <p>Just let us know a couple things and we will give you options for the perfect pairing.</p>
       <button class='js-begin' type='submit'>Let's Begin</button>
-    </div>
+    </main>
       
-    <div class='user-input'>
+    <section role='region' class='user-input'>
       <form action="#" class="js-search-form" id= 'user-input' hidden>
         <h2>STEP 1: Choose a movie genre</h2>
         <div class='genre-radio-button'>
@@ -61,9 +61,9 @@
         
         <button type='submit'>Give me my suggestions!</button>	
       </form>
-    </div>  
+    </section>  
     
-    <div class='results-section' hidden>
+    <div class='results-section' aria-live="assertive" hidden>
       <h2 class='js-results-header'>Now it's up to you to make the final pairing. Enjoy your dinner and a movie!</h3>
       <div class="js-movie-result movie-result-section">
         <h3 class='js-results-header'>Movies in theares now</h3>
@@ -73,6 +73,7 @@
       </div>
     </div>  
 
+    <button class='find-out-more' type='click' hidden>Find Out More</button>  
     <button class='restart' type='reset' form='user-input' hidden>Restart</button>
 
     <script src="index.js"></script>
