@@ -121,9 +121,12 @@ function showResultsinDOM() {
   $('.find-out-more').prop('hidden', false)
 }
 
+
+
 function watchSubmit() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
+
     let genreQueryTarget = $(event.currentTarget).find("input[type='radio']:checked");
     const genreId = genreQueryTarget.val();
     const genre = idToGenre[genreId];
