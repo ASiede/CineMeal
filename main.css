@@ -1,14 +1,4 @@
-/*
 
-test test test test
-
-*/
-
-
-/*
-
-more test text
-*/
 * {
 	box-sizing: border-box;
 }
@@ -30,9 +20,10 @@ header {
 	padding: 10px;
 }
 
-/*Is below still aria friendly??*/
 .user-input [type='radio'] {
-	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	z-index: -1;
 }
 
 .genre-radio-button {
@@ -53,7 +44,7 @@ input[type="radio"]:checked+label {
 }
 
 span {
-	font-size: 7em;
+	font-size: 4em;
 }
 /*
 .genre-radio-button input[type='radio']:checked ~ .genre-h {
@@ -61,8 +52,15 @@ span {
 	border: red 5px solid;
 }*/
 
+/* After inputs are chosen*/
+.inputs-chosen {
+	display: inline-block;
+}
+
+
+
 .genre-selected {
-	background-color: red;
+	border: 3px solid gold;
 }
 
 .user-input {

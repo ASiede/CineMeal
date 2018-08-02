@@ -114,11 +114,24 @@ function displayFOURSQUARESearchData(data) {
   $('.js-restaurant-result h3').append(results);
 }
 
-function showResultsinDOM() {
+function showResultsinDOM(zipCode) {
   $('.results-section').prop('hidden', false)
   $('.restart').prop('hidden', false);
-  $('form').prop('hidden', true);
-  $('.find-out-more').prop('hidden', false)
+  
+// collapse step 1
+  // $('.genre-radio-button').not('.genre-selected').toggle('blind');
+  $('.genre-radio-button').not('.genre-selected').hide();
+  // $('form').toggle('top blind');
+  $('.chosen-section').addClass('inputs-chosen');
+  $('.chosen-section .choose-genre').html('Genre:');
+  $('.chosen-section .choose-location').html('Location:');
+
+  $("label[for='js-zip-code-query']").hide();
+  $('.js-zip-code-query').replaceWith(zipCode);
+  $('.js-search-form button').hide();
+
+
+  $('.find-out-more').prop('hidden', false);
 }
 
 
@@ -137,7 +150,7 @@ function watchSubmit() {
     const restaurantCatagory = genreToFoodCatagory[genre];
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
 
-    showResultsinDOM();
+    showResultsinDOM(zipCode);
 
 
   });
