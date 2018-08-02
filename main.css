@@ -15,9 +15,17 @@ header {
 
 }
 
-.initial-page p {
+/*****************************************
+Form Elements
+*******************************************/
+/*.user-input {
+	margin-left: auto;
+	margin-right: auto;
 	text-align: center;
-	padding: 10px;
+}*/
+
+form button {
+	margin: 20px 0px;
 }
 
 .user-input [type='radio'] {
@@ -27,7 +35,6 @@ header {
 }
 
 .genre-radio-button {
-	/*border: black solid 1px;*/
 	display: inline-block;
 	padding: 30px;
 	background-color: #B0CDD9;
@@ -35,49 +42,30 @@ header {
 	border-radius: 10%;
 }
 
-input[type='radio'] {
-	margin-left: 0;
-}
-
 input[type="radio"]:checked+label {
   background-color: orange;
 }
 
-span {
-	font-size: 4em;
-}
-/*
-.genre-radio-button input[type='radio']:checked ~ .genre-h {
-	background-color: orange;
-	border: red 5px solid;
-}*/
 
-/* After inputs are chosen*/
+/*****************************************
+Form Elements after user iputs chosen
+*******************************************/
 .inputs-chosen {
 	display: inline-block;
+	border: black solid 1px;
 }
 
 
-
+/*****************************************
+Results Elements
+*******************************************/
 .genre-selected {
 	border: 3px solid gold;
 }
 
-.user-input {
-	margin-left: auto;
-	margin-right: auto;
-	/*border: solid red 1px;*/
-	text-align: center;
-}
-
-form button {
-	margin: 20px 0px;
-}
-
 .movie-results, .restaurant-results {
-	/*border: green solid 3px;*/
 	border-radius: 5%;
-	height: 200px;
+	height: 350px;
 	overflow:scroll;
 	text-align: center;
 	margin: 10px;
@@ -92,19 +80,12 @@ form button {
 }
 
 .movie-result-section, .restaurant-result-section {
-	/*border: blue solid 5px;*/
 	width:48%;
-	display: inline-block;
-
-}
-
-.js-begin {
 	display: inline-block;
 }
 
 .results-section {
-	/*border: purple solid 5px;*/
-	margin: 30px;
+	margin: 15px;
 }
 
 h3 {
@@ -122,6 +103,50 @@ h4 {
 
 .result-selected {
 	background-color: red;
+}
+
+/************Modal Syles ***********/
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+   	left:0;
+   	top:0;
+   /* left: 50%;
+    top: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+span {
+	font-size: 4em;
 }
 
 /*colors

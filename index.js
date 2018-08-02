@@ -3,6 +3,8 @@
 const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/discover/movie?';
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 
+const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/VENUE_ID'
+
 
 // Dates for the Movie API call
 const today = new Date();
@@ -81,12 +83,22 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
 
+function getDataFromFOURSQUAREVENUEApi(callback){
+  const query = {
+    VENUE_ID:'4c0bd0446071a5937ac3e132',
+    client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
+    client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
+    v: '20180323'
+  }
+  $.getJSON(FOURSQUARE_VENUE_SEARCH_URL, query, callback);
+}
+
 
 function renderMovieResult(result) {
   return `
-  <div role='button' class='movie-results'>
+  <div role='button' class='movie-results' data-summary='${result.overview}'>
     <h4>${result.title}</h4>
-    <p>${result.overview}</p>
+    <img src='http://image.tmdb.org/t/p/w185${result.poster_path}' alt=''>
   </div>
   `;
 }
@@ -95,9 +107,9 @@ function renderMovieResult(result) {
 
 function renderRestaurantResult(result) {
   return `
-  <div role='button' class='restaurant-results'>
+  <div role='button' class='restaurant-results' data-address='${result.venue.location.formattedAddress[0]}' data-venueID='${result.venue.id}'>
     <h4>${result.venue.name}</h4>
-    <p>${result.venue.location.formattedAddress[0]}</p>
+    <h4></h4>
   </div>
   `;
 }
@@ -106,12 +118,16 @@ function displayTMDBSearchData(data) {
   const topThree = data.results.slice(0,3);
   const results = topThree.map((item, index)=>renderMovieResult(item));
   $('.js-movie-result h3').append(results);
+  console.log(data);
 }
 
 function displayFOURSQUARESearchData(data) {
   const groupsObj = data.response.groups[0];
   const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
   $('.js-restaurant-result h3').append(results);
+  console.log(data);
+  // venueID = groupsObj.items.id;
+  // console.log(venueID);
 }
 
 function showResultsinDOM(zipCode) {
@@ -183,7 +199,7 @@ function highlightChosenGenre(){
   })
 }
 
-//Select final paid
+//Find out more functionallity
 
 function handleFinalMovieSelect(){
   $('.js-movie-result').on('click', '.movie-results', function(event){
@@ -205,14 +221,71 @@ function handleFinalRestaurantSelect(){
   });
 }
 
+function handleCloseModal(){
+  $('span').on('click', function(){
+    $('.modal').css('display', 'none');
+  })
+}
+
+function displayRestaurantMoreInfo() {
+  $('.modal-content h3.restaurant').after(renderRestaurantMoreInfo());
+
+
+}
+
+function renderRestaurantMoreInfo() {
+  const restaurantAddress = $('.restaurant-results.result-selected').data('address');
+  const restaurantName = $('.restaurant-results.result-selected h4').html();
+  let genreQueryTarget = $('form').find("input[type='radio']:checked");
+  const genreId = genreQueryTarget.val();
+  const genre = idToGenre[genreId];
+  const restaurantCatagory = genreToFoodCatagory[genre];
+  return `
+  <div>
+    <h4>${restaurantName}</h4>
+    <p>${restaurantAddress}</p>
+    <p>Known as one of your areas top ${restaurantCatagory} restaurants, we think this pairs best with the ${genre} movie selected</p>
+  </div>
+  `;
+}
+
+function  renderMovieMoreInfo() {
+  const movieSummary = $('.movie-results.result-selected').data('summary');
+  const movieTitle = $('.movie-results.result-selected h4').html();
+  return `
+  <div>
+    <h4>${movieTitle}</h4>
+    <p>${movieSummary}</p>
+  </div>
+  `;
+}
+
+function displayMovieMoreInfo() {
+  $('.modal-content h3.movie').after(renderMovieMoreInfo());
+
+}
+
 function handleFindOutMore(){
   $('.find-out-more').on('click', function() {
-    const movieResults = $('.js-movie-result').find('.movie-results');
-    console.log(movieResults);
-    console.log(movieResults.hasClass('.result-selected'));
-    if ( ($('.js-movie-result').find('.movie-results').hasClass('.result-selected')) && ($('.js-restaurant-result').find('.restaurant-results').hasClass('.result-selected')) ) {
+    const movieChosen = $('.movie-results.result-selected h4').html();
+    console.log(movieChosen);
+    const restaurantChosen = $('.restaurant-results.result-selected h4').html();
+    
+
+    if ( (movieChosen !== undefined) || (restaurantChosen !== undefined) ) {
     //return just those two results
       console.log('both selected');
+      $('.modal').css('display', 'block');
+      handleCloseModal();
+      displayMovieMoreInfo();
+      displayRestaurantMoreInfo();
+      
+
+      const venueIDquery = $('result-selected').data('venueID');
+      // getDataFromFOURSQUAREVENUEApi(renderRestaurantMoreInfo);
+
+
+
     } else {
       $('.find-out-more').before('<p>Please select one movie and one restaurant</p>');
   }});
@@ -222,7 +295,10 @@ function handleFindOutMore(){
 
 
 
+
+
 function init() {
+  $(handleCloseModal);
   $(handleAppRestart);
   $(handleBeginButton);
   $(watchSubmit);
