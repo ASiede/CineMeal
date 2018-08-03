@@ -98,7 +98,7 @@ function renderMovieResult(result) {
   return `
   <div role='button' class='movie-results' data-summary='${result.overview}'>
     <h4>${result.title}</h4>
-    <img src='http://image.tmdb.org/t/p/w185${result.poster_path}' alt=''>
+    <img src='http://image.tmdb.org/t/p/w154${result.poster_path}' alt=''>
   </div>
   `;
 }
@@ -244,7 +244,7 @@ function renderRestaurantMoreInfo() {
   <div>
     <h4>${restaurantName}</h4>
     <p>${restaurantAddress}</p>
-    <p>Known as one of your areas top ${restaurantCatagory} restaurants, we think this pairs best with the ${genre} movie selected</p>
+    <p>Known as one of your areas top ${restaurantCatagory} restaurants, we think this pairs best with a ${genre} movie</p>
   </div>
   `;
 }
@@ -291,11 +291,6 @@ function handleFindOutMore(){
   }});
 
 }
-
-
-
-
-
 
 function init() {
   $(handleCloseModal);

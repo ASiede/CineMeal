@@ -21,59 +21,57 @@
       
     <section role='region' class='user-input'>
       <form action="#" class="js-search-form" id= 'user-input' hidden>
-        
+        <div class='chosen-section chosen-genre-wrapper'>
+          <h2 class='choose-genre'>STEP 1: Choose a movie genre</h2>
+          <div class='genre-radio-button'>
+            <label for="drama">
+              <input type="radio" name="genre" id="drama" value="18" required><span>🎭</span><br>Drama
+            </label>
+          </div>    
 
+          <div class='genre-radio-button'>
+            <label for="comedy">
+              <input type="radio" name="genre" id="comedy" value="35"><span>🤡</span><br>Comedy
+            </label>
+          </div>
 
-        <div class='chosen-section'>
-        <h2 class='choose-genre'>STEP 1: Choose a movie genre</h2>
-        <div class='genre-radio-button'>
-          <label for="drama">
-            <input type="radio" name="genre" id="drama" value="18" required><span>🎭</span><br>Drama
-          </label>
-        </div>    
-
-        <div class='genre-radio-button'>
-          <label for="comedy">
-            <input type="radio" name="genre" id="comedy" value="35"><span>🤡</span><br>Comedy
-          </label>
+          <div class='genre-radio-button'>
+            <label for="horror">
+              <input type="radio" name="genre" id="horror" value="27"><span>😱</span><br>Horror
+            </label>
+          </div>
+          
+          <div class='genre-radio-button'>
+            <label for="romantic"><input type="radio" name="genre" id="romance" value="10749"><span>😍</span><br>Romance
+            </label>
+          </div>
+          
+          <div class='genre-radio-button'>
+            <label for="family"><input type="radio" name="genre" id="family" value="10751"><span>👨‍👩‍👧‍👦</span><br>Family
+            </label>
+          </div>
+          
+          <div class='genre-radio-button'>
+            <label for="action"><input type="radio" name="genre" id="action" value="28"><span>🏃‍♀️</span><br>Action
+            </label>
+          </div><br>
         </div>
 
-        <div class='genre-radio-button'>
-          <label for="horror">
-            <input type="radio" name="genre" id="horror" value="27"><span>😱</span><br>Horror
-          </label>
-        </div>
-        
-        <div class='genre-radio-button'>
-          <label for="romantic"><input type="radio" name="genre" id="romantic" value="10749"><span>😍</span><br>Romantic
-          </label>
-        </div>
-        
-        <div class='genre-radio-button'>
-          <label for="family"><input type="radio" name="genre" id="family" value="10751"><span>👨‍👩‍👧‍👦</span><br>Family
-          </label>
-        </div>
-        
-        <div class='genre-radio-button'>
-          <label for="action"><input type="radio" name="genre" id="action" value="28"><span>🏃‍♀️</span><br>Action
-          </label>
-        </div><br>
-      </div>
-
-      <div class='chosen-section'>
-        <h2 class='choose-location'>STEP 2: Choose a location</h2>
-        <label for="js-zip-code-query">Zip Code:</label>
-        <input class="js-zip-code-query" type="text" value ='97214' required><br>
-      </div>  
+        <div class='chosen-section chosen-zip-wrapper'>
+          <h2 class='choose-location'>STEP 2: Choose a location</h2>
+          <label for="js-zip-code-query">Zip Code:</label>
+          <input class="js-zip-code-query" type="text" required><br>
+        </div>  
         
         <button type='submit'>Give me my suggestions!</button>	
       </form>
+
     </section>  
     
     <div class='results-section' aria-live="assertive" hidden>
-      <h3 class='js-results-header'>Here are your results. Choose your dinner and a movie to find out more info. Or let fate decide.</h3>
+      <h3 class='js-results-header'>Here are your results. Choose your dinner and a movie to find out more info</h3>
 
-      <button class='random-choice' type=click>Take the wheel jesus</button><br>
+      <!-- <button class='random-choice' type=click>Take the wheel jesus</button><br> -->
 
       <div class="js-movie-result movie-result-section">
         <h3 class='js-results-header'>Movies in theares now</h3>
@@ -84,7 +82,7 @@
     </div>  
 
     <button class='find-out-more' type='click' hidden>Find Out More</button>  
-    <button class='restart' type='reset' form='user-input' hidden>Restart</button>
+   <!--  <button class='restart' type='reset' form='user-input' hidden>Restart</button> -->
 
     <div class='modal'>
       <div class='modal-content'>
