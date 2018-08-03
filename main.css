@@ -75,10 +75,11 @@ Results Elements
 	overflow:hidden;
 	text-align: center;
 	margin: 5px;
+
 }
-.restaurant-results h4 {
+/*.restaurant-results h4 {
 	margin-top: 75%;
-}
+}*/
 
 .movie-results h4 {
 	margin-top: 10px;
@@ -94,8 +95,9 @@ Results Elements
 }
 
 .movie-result-section, .restaurant-result-section {
-	width:48%;
+	width:47%;
 	display: inline-block;
+	max-width: 300px;
 }
 
 .results-section {
