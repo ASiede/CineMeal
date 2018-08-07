@@ -1,7 +1,6 @@
 'use strict'
 
 // API Endpoints
-const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/discover/movie?';
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/'
 const GRACENOTE_SEARCH_URL = 'http://data.tmsapi.com/v1.1/movies/showings';
@@ -52,29 +51,37 @@ function handleBeginButton() {
 }
 
 // Handling TMDB API
-function getDataFromTMDBApi(genreId, callback) {
+function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
-    with_genres: `${genreId}`,
-    api_key: '0d004f603b5e46bc91ac76e45f1a3078',
-    'primary_release_date.gte':`${ISODateAMonthAgo}`,
-    'primary_release_date.lte':`${ISODate}`,
-    sort_by: 'popularity.desc',
+    startDate: `${ISODate}`,
+    api_key: 'wvgp8npjcpddxq2daqde46z3',
+    zip: `${zipCode}`
   }
-  $.getJSON(TMDB_SEARCH_URL, query, callback);
+  $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
 }
 
-function renderMovieResult(result) {
-  return `
-  <div role='button' class='movie-results' data-summary='${result.overview}'>
+function renderMovieData(result){
+
+  return  `
+  <div role='button' class='movie-results' data-summary='${result.shortDescription}'>
     <h4>${result.title}</h4>
-    <img src='http://image.tmdb.org/t/p/w154${result.poster_path}' alt=''>
+    <p>${result.shortDescription}</p>
   </div>
-  `;
+ `;
+  
 }
 
-function displayTMDBSearchData(data) {
-  const topThree = data.results.slice(0,10);
-  const results = topThree.map((item, index)=>renderMovieResult(item));
+
+function displayMovieData(data){
+  
+  function containsGenre(data){
+    const genresArr = data.genres;
+    return genresArr.includes('action');
+  }
+
+  const filteredData = data.filter(containsGenre);
+
+  const results = filteredData.map((item, index)=>renderMovieData(item));
   $('.js-movie-result h4').html(results);
   console.log(data);
 }
@@ -109,27 +116,6 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
   }
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
-
-
-//   function renderRestaurantResult(result) {
-//     const restaurantID = `${result.venue.id}`;
-//     console.log(restaurantID);
-
-
-//     function renderPhotoResult(data) {
-//       const restaurantPhoto = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
-//       return restaurantPhoto;
-//     }
-//     getDataFromFOURSQUAREVENUEApi(restaurantID, renderPhotoResult);
-  
-//     return `
-//     <div role='button' class='restaurant-results' data-address='${result.venue.location.formattedAddress[0]}' data-venueID='${result.venue.id}'>
-//       <h4>${result.venue.name}</h4>
-//       <p></p>
-//     </div>
-//     `;
-//   }
-
 
 
 function renderRestaurantResult(result) {  
@@ -172,16 +158,19 @@ function showResultsinDOM(zipCode) {
 function watchSubmit() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
-    //Movie Results
+    
+    //Restaurant Results
     let genreQueryTarget = $(event.currentTarget).find("input[type='radio']:checked");
     const genreId = genreQueryTarget.val();
     const genre = idToGenre[genreId];
-    getDataFromTMDBApi(genreId, displayTMDBSearchData);
-    //Restaurant Results
+
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
     const zipCode = zipCodeQueryTarget.val();
     const restaurantCatagory = genreToFoodCatagory[genre];
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
+
+    //Movie Results
+    getDataFromGRACENOTEApi(zipCode, displayMovieData);
 
     showResultsinDOM(zipCode);
   });
@@ -302,41 +291,9 @@ function handleCloseModal(){
   });
 }
 
-//Handling displaying the movie showtimes
-function getDataFromGRACENOTEApi(callback) {
-  const query = {
-    startDate: `${ISODate}`,
-    api_key: 'wvgp8npjcpddxq2daqde46z3',
-    zip: '97214'
-  }
-  $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
-}
 
-// function displayShowtimes(data){
-//   console.log(data[0]);
-//   return `${data[0]}`;
-// }
-function renderShowtimes(result){
-return `<div>${result.firstTheater.dateTime}</div>`
-}
-function displayShowtimes(data){
-  const firstMovie = data[0];
-  const showtimes = firstMovie.showtimes;
-  const firstTheater = showtimes[0];
-  const results = firstTheater.map((item, index)=>renderShowtimes(item));
-  $('.showtimes').replaceWith(results);
-}
-
-function handleShowShowtimes() {
-  $('.showtimes').on('click', function(event){
-    event.preventDefault();
-    console.log('heard show showtimes');
-    getDataFromGRACENOTEApi(displayShowtimes);
-  });
-}
 
 function init() {
-  $(handleShowShowtimes);
   $(handleEditChoices);
   $(handleCloseModal);
   $(handleBeginButton);
