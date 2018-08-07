@@ -18,7 +18,6 @@ header {
 /*****************************************
 Form Elements
 *******************************************/
-
 form button {
 	margin: 20px 0px;
 }
@@ -51,7 +50,7 @@ span {
 
 
 /*****************************************
-Form Elements after user iputs chosen
+Form Elements after user inputs chosen
 *******************************************/
 .inputs-chosen {
 	display: inline-block;
@@ -73,8 +72,6 @@ Form Elements after user iputs chosen
 /*****************************************
 Results Elements
 *******************************************/
-
-
 .movie-results, .restaurant-results {
 	border-radius: 5%;
 	height: 300px;
@@ -101,7 +98,7 @@ Results Elements
 }
 
 .movie-result-section, .restaurant-result-section {
-	width:47%;
+	width:45%;
 	display: inline-block;
 	max-width: 300px;
 }
@@ -120,32 +117,36 @@ Results Elements
 	color: red;
 }
 
+.find-out-more {
+	margin-bottom: 40px;
+}
+
 /*****************************************
 Modal
 *******************************************/
 
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1; 
    	left:0;
    	top:0;
    /* left: 50%;
     top: 50%;*/
     /*transform: translate(-50%, -50%);*/
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); 
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto; 
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%; 
 }
 
 .close {
