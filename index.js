@@ -29,6 +29,7 @@ function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
   $('header').html("<h1>Dinner and a Movie Chooser</h1>");
   $('.initial-page').prop('hidden', true);
+  $('.edit').hide();
 }
 
 function handleBeginButton() {
@@ -78,21 +79,36 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
     near: `${zipCode}`,
     query: `restaurant, ${restaurantCatagory}`,
     v: '20180323',
-    limit: 3,
+    limit: 10,
   }
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
 
-function getDataFromFOURSQUAREVENUEApi(callback){
+function getDataFromFOURSQUAREVENUEApi(restaurantID, callback){
   const query = {
     VENUE_ID:'4c0bd0446071a5937ac3e132',
     client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
     client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
     v: '20180323'
   }
-  $.getJSON(FOURSQUARE_VENUE_SEARCH_URL, query, callback);
+  $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, callback);
 }
 
+function displayFOURSQUAREPhoto(data) {
+  const results = data.map((item, index)=>renderPhotoResult(item));
+  $('.js-restaurant-result div').html(results);
+  console.log(data);
+  // venueID = groupsObj.items.id;
+  // console.log(venueID);
+}
+
+function renderPhotoResult(result) {
+  return `
+  <img src='${result.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}' alt='image'>
+  `;
+}
+
+// <img src='${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}' alt='image'>
 
 function renderMovieResult(result) {
   return `
@@ -103,36 +119,46 @@ function renderMovieResult(result) {
   `;
 }
 
-//<img src="'http://image.tmdb.org/t/p/w185/' + '${result.poster_path}'"  alt=''>
-
 function renderRestaurantResult(result) {
   return `
   <div role='button' class='restaurant-results' data-address='${result.venue.location.formattedAddress[0]}' data-venueID='${result.venue.id}'>
     <h4>${result.venue.name}</h4>
-    <h4></h4>
   </div>
   `;
 }
 
 function displayTMDBSearchData(data) {
-  const topThree = data.results.slice(0,3);
+  const topThree = data.results.slice(0,10);
   const results = topThree.map((item, index)=>renderMovieResult(item));
-  $('.js-movie-result h3').append(results);
+  $('.js-movie-result h4').html(results);
   console.log(data);
 }
 
 function displayFOURSQUARESearchData(data) {
   const groupsObj = data.response.groups[0];
   const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
-  $('.js-restaurant-result h3').append(results);
+
+  $('.js-restaurant-result h4').html(results);
+
+
+
+// picture on first result div  
+  // getDataFromFOURSQUAREVENUEApi(restaurantID, callback)
+  // const photo = groupsObj.items.map((item, index)=>renderPhotoResult(item));
+  // $('.js-restaurant-result div').html(photo);
+
+
+
   console.log(data);
+
+
   // venueID = groupsObj.items.id;
   // console.log(venueID);
 }
 
 function showResultsinDOM(zipCode) {
   $('.results-section').prop('hidden', false)
-  $('.restart').prop('hidden', false);
+  // $('.restart').prop('hidden', false);
   
 // collapse step 1
   // $('.genre-radio-button').not('.genre-selected').toggle('blind');
@@ -144,9 +170,9 @@ function showResultsinDOM(zipCode) {
 
   $("label[for='js-zip-code-query']").hide();
   $('.js-zip-code-query').replaceWith(zipCode);
-  $('.js-search-form button').hide();
+  $('.js-search-form button.submit').hide();
 
-
+  $('.edit').show();
   $('.find-out-more').prop('hidden', false);
 }
 
@@ -166,11 +192,33 @@ function watchSubmit() {
     const restaurantCatagory = genreToFoodCatagory[genre];
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
 
+   
+
+
     showResultsinDOM(zipCode);
 
 
   });
 }
+// hanlding edititing choices
+
+function handleEditChoices(){
+  $('.edit').on('click', function(event){
+    event.preventDefault();
+    $('.genre-radio-button').not('.genre-selected').show();
+    $('.js-search-form button.submit').show();
+    
+    $('.chosen-zip-wrapper').html(`
+        <h2 class='choose-location'>Location</h2>
+          <label for="js-zip-code-query">Zip Code:</label>
+          <input class="js-zip-code-query" type="text" value='97214' required><br>`
+          )
+
+    $('.edit').hide();
+  });
+}
+
+
 
 //handle restarting the app
 
@@ -224,11 +272,11 @@ function handleFinalRestaurantSelect(){
 function handleCloseModal(){
   $('span').on('click', function(){
     $('.modal').css('display', 'none');
-  })
+  });
 }
 
 function displayRestaurantMoreInfo() {
-  $('.modal-content h3.restaurant').after(renderRestaurantMoreInfo());
+  $('.restaurant-more-info').html(renderRestaurantMoreInfo());
 
 
 }
@@ -261,7 +309,7 @@ function  renderMovieMoreInfo() {
 }
 
 function displayMovieMoreInfo() {
-  $('.modal-content h3.movie').after(renderMovieMoreInfo());
+  $('.movie-more-info').html(renderMovieMoreInfo());
 
 }
 
@@ -279,20 +327,19 @@ function handleFindOutMore(){
       handleCloseModal();
       displayMovieMoreInfo();
       displayRestaurantMoreInfo();
+      $('.js-select-error p').hide();
       
 
       const venueIDquery = $('result-selected').data('venueID');
       // getDataFromFOURSQUAREVENUEApi(renderRestaurantMoreInfo);
-
-
-
     } else {
-      $('.find-out-more').before('<p>Please select one movie and one restaurant</p>');
+      $('.js-select-error').html("<p class='select-error'>Please select one movie and one restaurant</p>");
   }});
 
 }
 
 function init() {
+  $(handleEditChoices);
   $(handleCloseModal);
   $(handleAppRestart);
   $(handleBeginButton);

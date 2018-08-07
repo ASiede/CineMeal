@@ -60,10 +60,11 @@
         <div class='chosen-section chosen-zip-wrapper'>
           <h2 class='choose-location'>STEP 2: Choose a location</h2>
           <label for="js-zip-code-query">Zip Code:</label>
-          <input class="js-zip-code-query" type="number" required><br>
+          <input class="js-zip-code-query" type="text" value='97214' required><br>
         </div>  
         
-        <button type='submit'>Give me my suggestions!</button>	
+        <button class ='submit' type='submit'>Give me my suggestions!</button>
+        <button type='click' class='edit' hidden>Edit Choices</button>	
       </form>
 
     </section>  
@@ -75,12 +76,16 @@
 
       <div class="js-movie-result movie-result-section">
         <h3 class='js-results-header'>Movies in theaters now</h3>
+        <h4></h4>
+        
       </div>
       <div class="js-restaurant-result restaurant-result-section">
         <h3 class='js-results-header'>Restaurants in your area</h3>
+        <h4 class='restaurant-name'></h2>
+        <div class='restaurant-photo'></div>
       </div>
     </div>  
-
+    <div class='js-select-error'></div>
     <button class='find-out-more' type='click' hidden>Find Out More</button>  
    <!--  <button class='restart' type='reset' form='user-input' hidden>Restart</button> -->
 
@@ -89,7 +94,9 @@
         <span class='close'>&times;</span>
         <h2>Here are you results for your night out. Enjoy!</h2>
         <h3 class='movie'>🎥 Your Movie: 🎥</h3>
+        <div class='movie-more-info'></div>
         <h3 class='restaurant'>🍽️ Your Restaurant: 🍽️</h3>
+        <div class='restaurant-more-info'></div>
       </div>  
     </div>
 

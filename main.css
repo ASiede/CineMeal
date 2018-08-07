@@ -64,6 +64,12 @@ Form Elements after user iputs chosen
 	height: 50%;
 }
 
+.edit, .submit {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /*****************************************
 Results Elements
 *******************************************/
@@ -102,10 +108,16 @@ Results Elements
 
 .results-section {
 	margin: 5px;
+	height: 900px;
+	overflow: auto;
 }
 
 .result-selected {
 	border: 3px solid navy;
+}
+
+.select-error {
+	color: red;
 }
 
 /*****************************************
