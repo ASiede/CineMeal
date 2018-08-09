@@ -5,6 +5,35 @@ const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/'
 const GRACENOTE_SEARCH_URL = 'http://data.tmsapi.com/v1.1/movies/showings';
 
+
+//
+let restaurantData = [];
+console.log(restaurantData);
+
+function handlesRestaurantData(data){
+  const groupsObj = data.response.groups[0];
+  restaurantData = groupsObj.items;
+  getPhotos();
+  
+  
+}
+
+function handlesPhotoData(data, index) {
+  // restaurantData = restaurantData[index];
+  restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
+}
+
+function getPhotos() {
+  const requests = restaurantData.map(function(restaurant, index){
+    const restaurantID = restaurantData[index].venue.id;
+    return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);})
+
+    $.when(...requests).done(() => {
+    displayFOURSQUARESearchData();
+  }) 
+}
+
+
 // Calculating dates for the Movie API call
 const today = new Date();
 const fullISODate = today.toISOString();
@@ -89,29 +118,27 @@ function renderMovieData(result){
  `; 
 }
 
+
 function displayMovieData(data){
   const filteredData = data.filter(containsGenre);
 
   const results = filteredData.map((item, index)=>renderMovieData(item));
+
   $('.js-movie-result h4').html(results);
-  console.log(data);
 }
 
 // Handling FOURSQUARE API---Photo
-function getDataFromFOURSQUAREVENUEApi(restaurantID, callback){
+function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
-    client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
+    client_id: 'CQW1ZTGV0JMZAOZKLJZ5SKDWHR54ZQAQP3ERGAASEVGBIJ0Z',
+    client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
     v: '20180323'
   }
-  $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, callback);
+  // return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
+    ;
 }
 
-function displayFOURSQUAREPhoto(data) {
-  const results = data.map((item, index)=>renderPhotoResult(item));
-  $('.js-restaurant-result div').html(results);
-  console.log(data);
-}
+
 
 
 
@@ -130,16 +157,16 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
 
 function renderRestaurantResult(result) {  
   return `
-  <div role='button' class='restaurant-results' data-address='${result.venue.location.formattedAddress[0]}' data-venueID='${result.venue.id}'>
+  <div role='button' class='restaurant-results'>
     <h4>${result.venue.name}</h4>
-    <p>${result.venue.location.formattedAddress[0]}</p>
+    <p>${result.venue.location.address}</p>
+    <img src='${result.img}' alt=''>
   </div>
   `;
 }
 
-function displayFOURSQUARESearchData(data) {
-  const groupsObj = data.response.groups[0];
-  const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
+function displayFOURSQUARESearchData() {
+  const results = restaurantData.map((item, index)=>renderRestaurantResult(item));
   $('.js-restaurant-result h4').html(results);
 }
 
@@ -175,7 +202,9 @@ function watchSubmit() {
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
     const zipCode = zipCodeQueryTarget.val();
     const restaurantCatagory = genreToFoodCatagory[genre];
-    getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
+    getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, handlesRestaurantData);
+
+   
 
     //Movie Results
     getDataFromGRACENOTEApi(zipCode, handleMovieData);
