@@ -114,20 +114,11 @@ function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
     client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
     v: '20180323'
   }
-  return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
-    // .error(function (err) {
-    //   var msg = $.parseJSON(err).msg;
-    //   alert(msg);
-    // })
-
+  // return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
     ;
 }
 
-// function displayFOURSQUAREPhoto(data) {
-//   const results = data.map((item, index)=>renderPhotoResult(item));
-//   $('.js-restaurant-result div').html(results);
-//   console.log(data);
-// }
+
 
 
 
