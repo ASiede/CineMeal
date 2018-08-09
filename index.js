@@ -50,7 +50,9 @@ function handleBeginButton() {
     });
 }
 
-// Handling TMDB API
+// Handling Movie API
+let movieData = []
+
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
@@ -60,25 +62,34 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
 }
 
-function renderMovieData(result){
+function handleMovieData(data){
+  
+  const allData = data;
+  console.log(allData);
+  
+  const mmovieData = allData.filter((movie) => movie.genres.includes("Action"));
+  
+  console.log(movieData);
 
+  let genreQueryTarget = $('form').find("input[type='radio']:checked");
+  const genreId = genreQueryTarget.val();
+  const genre = idToGenre[genreId];
+  console.log(genre);
+
+  // movieData = data.slice(0,2);
+  // console.log(movieData);
+}
+
+function renderMovieData(result){
   return  `
   <div role='button' class='movie-results' data-summary='${result.shortDescription}'>
     <h4>${result.title}</h4>
     <p>${result.shortDescription}</p>
   </div>
- `;
-  
+ `; 
 }
 
-
 function displayMovieData(data){
-  
-  function containsGenre(data){
-    const genresArr = data.genres;
-    return genresArr.includes('action');
-  }
-
   const filteredData = data.filter(containsGenre);
 
   const results = filteredData.map((item, index)=>renderMovieData(item));
@@ -112,11 +123,10 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
     near: `${zipCode}`,
     query: `restaurant, ${restaurantCatagory}`,
     v: '20180323',
-    limit: 10,
+    limit: 2,
   }
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
-
 
 function renderRestaurantResult(result) {  
   return `
@@ -132,8 +142,6 @@ function displayFOURSQUARESearchData(data) {
   const results = groupsObj.items.map((item, index)=>renderRestaurantResult(item));
   $('.js-restaurant-result h4').html(results);
 }
-
-
 
 
 
@@ -170,7 +178,7 @@ function watchSubmit() {
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, displayFOURSQUARESearchData);
 
     //Movie Results
-    getDataFromGRACENOTEApi(zipCode, displayMovieData);
+    getDataFromGRACENOTEApi(zipCode, handleMovieData);
 
     showResultsinDOM(zipCode);
   });
