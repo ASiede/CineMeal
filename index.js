@@ -26,19 +26,22 @@ console.log(restaurantData);
 function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
-  getPhotos();
-  displayFOURSQUARESearchData(testArray);
   console.log(restaurantData);
+  getPhotos();
+  console.log(restaurantData);
+  displayFOURSQUARESearchData(restaurantData);
+  
 }
 
 function handlesPhotoData(data, index) {
-  arr = restaurantData[index];
-  arr.img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
+  // restaurantData = restaurantData[index];
+  restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
 }
 
 function getPhotos() {
   restaurantData.forEach(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
+    console.log(restaurantID);
     getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);
   });  
 }
