@@ -14,12 +14,9 @@ function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
   getPhotos();
-  
-  
 }
 
 function handlesPhotoData(data, index) {
-  // restaurantData = restaurantData[index];
   restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
 }
 
@@ -27,12 +24,10 @@ function getPhotos() {
   const requests = restaurantData.map(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
     return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);})
-
     $.when(...requests).done(() => {
     displayFOURSQUARESearchData();
   }) 
 }
-
 
 // Calculating dates for the Movie API call
 const today = new Date();
@@ -48,12 +43,12 @@ const ISODateAMonthAgo = fullISODateAMonthAgo.substr(0,10);
 
 //TMDB's genre IDs
 const idToGenre = {
-  27: 'horror',
-  18: 'drama',
-  10749: 'romantic',
-  35: 'comedy',
-  10751: 'family',
-  28: 'action'
+  27: 'Horror',
+  18: 'Drama',
+  10749: 'Romantic',
+  35: 'Comedy',
+  10751: 'Family',
+  28: 'Action'
 }
 
 // Apps key of how to match movie genre to food catagory
@@ -91,39 +86,41 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
 }
 
-function handleMovieData(data){
-  
-  const allData = data;
-  console.log(allData);
-  
-  const mmovieData = allData.filter((movie) => movie.genres.includes("Action"));
-  
-  console.log(movieData);
 
+
+function handleMovieData(data){
   let genreQueryTarget = $('form').find("input[type='radio']:checked");
   const genreId = genreQueryTarget.val();
   const genre = idToGenre[genreId];
-  console.log(genre);
+  const allData = data;
+  
+
+    function filtersGenre(movie) {
+      return (movie.genres != undefined && movie.genres.includes(genre));
+    }
+
+  movieData = allData.filter(filtersGenre);
+  console.log(movieData);
+
+  displayMovieData();
 
   // movieData = data.slice(0,2);
   // console.log(movieData);
 }
 
-function renderMovieData(result){
+function renderMovieData(movieObj){
   return  `
-  <div role='button' class='movie-results' data-summary='${result.shortDescription}'>
-    <h4>${result.title}</h4>
-    <p>${result.shortDescription}</p>
+  <div role='button' class='movie-results' data-summary='${movieObj.shortDescription}'>
+    <h4>${movieObj.title}</h4>
+    <p>${movieObj.shortDescription}</p>
   </div>
  `; 
 }
 
 
 function displayMovieData(data){
-  const filteredData = data.filter(containsGenre);
-
-  const results = filteredData.map((item, index)=>renderMovieData(item));
-
+  console.log(movieData);
+  const results = movieData.map((item, index)=>renderMovieData(item));
   $('.js-movie-result h4').html(results);
 }
 
@@ -137,8 +134,6 @@ function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   // return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
     ;
 }
-
-
 
 
 
