@@ -7,18 +7,6 @@ const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/'
 const GRACENOTE_SEARCH_URL = 'http://data.tmsapi.com/v1.1/movies/showings';
 
 
-const testArray = [
-  {
-    'name': 'canard',
-    'img': 'https://static.passeportsante.net/i41686-canard.jpg'
-  },
-  {
-    'name': 'bear',
-    'img': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/2010-brown-bear.jpg/200px-2010-brown-bear.jpg'
-  }
-]
-
-
 //
 let restaurantData = [];
 console.log(restaurantData);
@@ -26,10 +14,8 @@ console.log(restaurantData);
 function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
-  console.log(restaurantData);
   getPhotos();
-  console.log(restaurantData);
-  displayFOURSQUARESearchData(restaurantData);
+  
   
 }
 
@@ -39,11 +25,13 @@ function handlesPhotoData(data, index) {
 }
 
 function getPhotos() {
-  restaurantData.forEach(function(restaurant, index){
+  const requests = restaurantData.map(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
-    console.log(restaurantID);
-    getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);
-  });  
+    return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);})
+
+    $.when(...requests).done(() => {
+    displayFOURSQUARESearchData();
+  }) 
 }
 
 
@@ -122,11 +110,11 @@ function displayTMDBSearchData(data) {
 // Handling FOURSQUARE API---Photo
 function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
-    client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
+    client_id: 'CQW1ZTGV0JMZAOZKLJZ5SKDWHR54ZQAQP3ERGAASEVGBIJ0Z',
+    client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
     v: '20180323'
   }
-  $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, callback)
+  return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
     // .error(function (err) {
     //   var msg = $.parseJSON(err).msg;
     //   alert(msg);
