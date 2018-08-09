@@ -3,7 +3,7 @@
 // API Endpoints
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/'
-const GRACENOTE_SEARCH_URL = 'http://data.tmsapi.com/v1.1/movies/showings';
+const GRACENOTE_SEARCH_URL = 'https://data.tmsapi.com/v1.1/movies/showings';
 const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie';
 
 
@@ -80,7 +80,7 @@ let movieData = []
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'wvgp8npjcpddxq2daqde46z3',
+    api_key: 'nvvvccjun8w86gcpzw7apfhk',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
@@ -161,12 +161,11 @@ function displayTMDBSearchData(data) {
 // Handling FOURSQUARE API---Photo
 function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'CQW1ZTGV0JMZAOZKLJZ5SKDWHR54ZQAQP3ERGAASEVGBIJ0Z',
-    client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
+    client_id: 'LDU1IMFBFBXKY5H3U12DVVLQCZLBKWQXJRAMS0NZTJDFXRFT',
+    client_secret: 'FRM2LE0IBDDJTDTMASJOWAJBWV1UOKO432UDF5ZPVYRVBUWZ',
     v: '20180323'
   }
-  return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
-    ;
+  return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index));
 }
 
 
@@ -179,7 +178,7 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
     near: `${zipCode}`,
     query: `restaurant, ${restaurantCatagory}`,
     v: '20180323',
-    limit: 2,
+    limit: 3,
   }
   $.getJSON(FOURSQUARE_SEARCH_URL, query, callback);
 }
