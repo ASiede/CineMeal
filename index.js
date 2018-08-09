@@ -4,23 +4,23 @@
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/explore';
 const FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/'
 const GRACENOTE_SEARCH_URL = 'http://data.tmsapi.com/v1.1/movies/showings';
+const TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie';
 
 
 //
 let restaurantData = [];
-console.log(restaurantData);
 
 function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
-  getPhotos();
+  getRestaurantPhotos();
 }
 
 function handlesPhotoData(data, index) {
   restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
 }
 
-function getPhotos() {
+function getRestaurantPhotos() {
   const requests = restaurantData.map(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
     return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);})
@@ -47,7 +47,7 @@ const idToGenre = {
   18: 'Drama',
   10749: 'Romantic',
   35: 'Comedy',
-  10751: 'Family',
+  10751: 'Children',
   28: 'Action'
 }
 
@@ -86,26 +86,39 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
 }
 
-
-
 function handleMovieData(data){
   let genreQueryTarget = $('form').find("input[type='radio']:checked");
   const genreId = genreQueryTarget.val();
   const genre = idToGenre[genreId];
   const allData = data;
-  
-
+  console.log(genre);
     function filtersGenre(movie) {
       return (movie.genres != undefined && movie.genres.includes(genre));
     }
 
-  movieData = allData.filter(filtersGenre);
-  console.log(movieData);
+  movieData = allData.filter(filtersGenre).slice(0,3);
+  
+  
 
-  displayMovieData();
+  getMoviePhotos();
 
-  // movieData = data.slice(0,2);
   // console.log(movieData);
+}
+
+function handlesMoviePhotoData(data, index) {
+  console.log(data);
+  movieData[index].img = `http://image.tmdb.org/t/p/w185/${data.results[0].poster_path}`;
+}
+
+function getMoviePhotos() {
+  console.log(movieData);
+  const requests = movieData.map(function(movie, index){
+    const movieTitle = movieData[index].title;
+    console.log(movieTitle);
+    return getDataFromTMDBApi(movieTitle, index, handlesMoviePhotoData);})
+    $.when(...requests).done(() => {
+    displayMovieData();
+  }) 
 }
 
 function renderMovieData(movieObj){
@@ -113,15 +126,36 @@ function renderMovieData(movieObj){
   <div role='button' class='movie-results' data-summary='${movieObj.shortDescription}'>
     <h4>${movieObj.title}</h4>
     <p>${movieObj.shortDescription}</p>
+    <img src='${movieObj.img}' alt=''>
   </div>
  `; 
 }
-
 
 function displayMovieData(data){
   console.log(movieData);
   const results = movieData.map((item, index)=>renderMovieData(item));
   $('.js-movie-result h4').html(results);
+}
+
+
+
+// TMDB Pic
+
+function getDataFromTMDBApi(movieTitle, index, callback) {
+  const query = {
+    query: `${movieTitle}`,
+    api_key: '0d004f603b5e46bc91ac76e45f1a3078',
+    // 'primary_release_date.gte':`${ISODateAMonthAgo}`,
+    // 'primary_release_date.lte':`${ISODate}`,
+    // sort_by: 'popularity.desc',
+  }
+  return $.getJSON(TMDB_SEARCH_URL,  query, (data) => callback(data, index));
+}
+
+function displayTMDBSearchData(data) {
+  const topThree = data.results.slice(0,3);
+  const results = topThree.map((item, index)=>renderMovieResult(item));
+  $('.js-movie-result h3').append(results);
 }
 
 // Handling FOURSQUARE API---Photo
@@ -131,7 +165,7 @@ function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
     client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
     v: '20180323'
   }
-  // return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
+  return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
     ;
 }
 
@@ -198,8 +232,6 @@ function watchSubmit() {
     const zipCode = zipCodeQueryTarget.val();
     const restaurantCatagory = genreToFoodCatagory[genre];
     getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, handlesRestaurantData);
-
-   
 
     //Movie Results
     getDataFromGRACENOTEApi(zipCode, handleMovieData);
