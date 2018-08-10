@@ -14,11 +14,20 @@ function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
   getRestaurantPhotos();
-  console.log(restaurantData);
 }
 
 function handlesPhotoData(data, index) {
+  console.log(data);
   restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
+  if(data.response.venue.description == undefined) {
+    restaurantData[index].description = 'Description not provided';
+  } else {
+    restaurantData[index].description = `${data.response.venue.description}`;
+  };
+  console.log(data.response.venue.hours.timeframes.map((item) => `${days} + ${open[0].renderedTime}`));
+  restaurantData[index].hours = `${data.response.venue.description}`
+
+    
 }
 
 function getRestaurantPhotos() {
@@ -44,23 +53,23 @@ const fullISODateAMonthAgo = createDateMonthAgo().toISOString();
 const ISODateAMonthAgo = fullISODateAMonthAgo.substr(0,10);
 
 //TMDB's genre IDs
-const idToGenre = {
-  27: 'Horror',
-  18: 'Drama',
-  10749: 'Fantasy',
-  35: 'Comedy',
-  10751: 'Children',
-  28: 'Action'
-}
+// const idToGenre = {
+//   27: 'Horror',
+//   18: 'Drama',
+//   10749: 'Fantasy',
+//   35: 'Comedy',
+//   10751: 'Children',
+//   28: 'Action'
+// }
 
 // Apps key of how to match movie genre to food catagory
 const genreToFoodCatagory = {
-  horror: 'comfort food',
-  drama: 'american',
-  romantic: 'french',
-  comedy: 'burger joint',
-  family: 'pizza',
-  action: 'diner'
+  'Horror': 'comfort food',
+  "Drama": 'american',
+  'Fantasy': 'french',
+  "Comedy": 'burger joint',
+  "Children": 'pizza',
+  "Action": 'diner'
 };
 
 // Beginning the app
@@ -82,7 +91,7 @@ let movieData = []
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'ydqnppzdzmjtdk9taqsgxvrx',
+    api_key: 'wvgp8npjcpddxq2daqde46z3',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
@@ -90,8 +99,7 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
 
 function handleMovieData(data){
   let genreQueryTarget = $('form').find("input[type='radio']:checked");
-  const genreId = genreQueryTarget.val();
-  const genre = idToGenre[genreId];
+  const genre = genreQueryTarget.val();
   const allData = data;
     function filtersGenre(movie) {
       return (movie.genres != undefined && movie.genres.includes(genre));
@@ -111,7 +119,6 @@ function getMoviePhotos() {
     return getDataFromTMDBApi(movieTitle, index, handlesMoviePhotoData);})
     $.when(...requests).done(() => {
     displayMovieData();
-    console.log(movieData);
   }) 
 }
 
@@ -155,8 +162,8 @@ function displayTMDBSearchData(data) {
 // Handling FOURSQUARE API---Photo
 function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'LDU1IMFBFBXKY5H3U12DVVLQCZLBKWQXJRAMS0NZTJDFXRFT',
-    client_secret: 'FRM2LE0IBDDJTDTMASJOWAJBWV1UOKO432UDF5ZPVYRVBUWZ',
+    client_id: 'CQW1ZTGV0JMZAOZKLJZ5SKDWHR54ZQAQP3ERGAASEVGBIJ0Z',
+    client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
     v: '20180323'
   }
   return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index));
@@ -179,7 +186,7 @@ function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
 
 function renderRestaurantResult(result) {  
   return `
-  <div role='button' class='restaurant-results'>
+  <div role='button' class='restaurant-results' data-description='${result.description}'>
     <h4>${result.venue.name}</h4>
     <p>${result.venue.location.address}</p>
     <img src='${result.img}' alt=''>
@@ -218,9 +225,7 @@ function watchSubmit() {
     
     //Restaurant Results
     let genreQueryTarget = $(event.currentTarget).find("input[type='radio']:checked");
-    const genreId = genreQueryTarget.val();
-    const genre = idToGenre[genreId];
-
+    const genre = genreQueryTarget.val();
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
     const zipCode = zipCodeQueryTarget.val();
     const restaurantCatagory = genreToFoodCatagory[genre];
@@ -286,16 +291,19 @@ function handleFinalRestaurantSelect(){
 //Giving more info of chosen movie and restaurant
   //Restaurant
 function renderRestaurantMoreInfo() {
-  const restaurantAddress = $('.restaurant-results.result-selected').data('address');
+  // const restaurantAddress = $('.restaurant-results.result-selected').data('address');
+  
+  const restaurantDescription = $('.restaurant-results.result-selected').data('description');
+
   const restaurantName = $('.restaurant-results.result-selected h4').html();
+  console.log(restaurantName);
   let genreQueryTarget = $('form').find("input[type='radio']:checked");
-  const genreId = genreQueryTarget.val();
-  const genre = idToGenre[genreId];
+  const genre = genreQueryTarget.val();
   const restaurantCatagory = genreToFoodCatagory[genre];
   return `
   <div>
     <h4>${restaurantName}</h4>
-    <p>${restaurantAddress}</p>
+    <p>${restaurantDescription}</p>
     <p>Known as one of your areas top ${restaurantCatagory} restaurants, we think this pairs best with a ${genre} movie</p>
   </div>
   `;
@@ -345,34 +353,45 @@ function handleFindOutMore(){
 }
 
 const theatres = [];
+let theatreCounter = 0;
 function renderShowtimes(result){
 
-  // return `${result.dateTime}`;
 
+// Transform data into AMPM showtimes
   const militaryTime = result.dateTime.slice(11);
-  
-  if (!(theatres.includes(`${result.theatre.name}`))) {
-
-
-    theatres.push(`${result.theatre.name}`);
-    return `
-    <p class='theatreName'>${result.theatre.name}</p>
-    <p class='showtimeTime'>${militaryTime}</p>
-    `;
-  } else {
-    return `<p class='showtimeTime'>${militaryTime}</p>`;
+  const standardTime = militaryTime.split(':');
+  const hours = Number(standardTime[0]);
+  const minutes = Number(standardTime[1]);
+  let displayTime= '';
+  if (hours > 0 && hours <= 12) {
+    displayTime= "" + hours;
+    } else if (hours > 12) {
+    displayTime= "" + (hours - 12);
+    } else if (hours == 0) {
+    displayTime= "12";
   }
+  displayTime += (minutes < 10) ? ":0" + minutes : ":" + minutes;  
+  displayTime += (hours >= 12) ? " P.M." : " A.M.";
   
+  while ( (theatres.length < 3)  || (theatres.includes(`${result.theatre.name}`))){
+    if (!(theatres.includes(`${result.theatre.name}`))    ) {
+      theatres.push(`${result.theatre.name}`);
+      return `
+      <p class='theatreName'>${result.theatre.name}</p>
+      <p class='showtimeTime'>${displayTime}</p>
+      `;
+      } else {
+      return `
+      <p class='showtimeTime'>${displayTime}</p>`;
+      } 
+    };
 
-  
-}
+  }
 
 function displayShowtimes(){
   const showtimesArr = $('.movie-results.result-selected').data('showtimes');
-  console.log(showtimesArr[0]);
   const showtimes = showtimesArr.map((item) => renderShowtimes(item));
   $('.showtimes').html(showtimes);
-  
 }
 
 //Closing the Modal
