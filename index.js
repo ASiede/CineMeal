@@ -14,6 +14,7 @@ function handlesRestaurantData(data){
   const groupsObj = data.response.groups[0];
   restaurantData = groupsObj.items;
   getRestaurantPhotos();
+  console.log(restaurantData);
 }
 
 function handlesPhotoData(data, index) {
@@ -23,7 +24,8 @@ function handlesPhotoData(data, index) {
 function getRestaurantPhotos() {
   const requests = restaurantData.map(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
-    return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);})
+    // return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);
+  })
     $.when(...requests).done(() => {
     displayFOURSQUARESearchData();
   }) 
@@ -45,7 +47,7 @@ const ISODateAMonthAgo = fullISODateAMonthAgo.substr(0,10);
 const idToGenre = {
   27: 'Horror',
   18: 'Drama',
-  10749: 'Romantic',
+  10749: 'Fantasy',
   35: 'Comedy',
   10751: 'Children',
   28: 'Action'
@@ -80,7 +82,7 @@ let movieData = []
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'nvvvccjun8w86gcpzw7apfhk',
+    api_key: 'ydqnppzdzmjtdk9taqsgxvrx',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
@@ -91,39 +93,32 @@ function handleMovieData(data){
   const genreId = genreQueryTarget.val();
   const genre = idToGenre[genreId];
   const allData = data;
-  console.log(genre);
     function filtersGenre(movie) {
       return (movie.genres != undefined && movie.genres.includes(genre));
     }
 
   movieData = allData.filter(filtersGenre).slice(0,3);
-  
-  
-
   getMoviePhotos();
-
-  // console.log(movieData);
 }
 
 function handlesMoviePhotoData(data, index) {
-  console.log(data);
   movieData[index].img = `http://image.tmdb.org/t/p/w185/${data.results[0].poster_path}`;
 }
 
 function getMoviePhotos() {
-  console.log(movieData);
   const requests = movieData.map(function(movie, index){
     const movieTitle = movieData[index].title;
-    console.log(movieTitle);
     return getDataFromTMDBApi(movieTitle, index, handlesMoviePhotoData);})
     $.when(...requests).done(() => {
     displayMovieData();
+    console.log(movieData);
   }) 
 }
 
 function renderMovieData(movieObj){
+  const showtimeObj = JSON.stringify(movieObj.showtimes);
   return  `
-  <div role='button' class='movie-results' data-summary='${movieObj.shortDescription}'>
+  <div role='button' class='movie-results' data-summary='${movieObj.shortDescription}' data-showtimes='${showtimeObj}'>
     <h4>${movieObj.title}</h4>
     <p>${movieObj.shortDescription}</p>
     <img src='${movieObj.img}' alt=''>
@@ -132,7 +127,6 @@ function renderMovieData(movieObj){
 }
 
 function displayMovieData(data){
-  console.log(movieData);
   const results = movieData.map((item, index)=>renderMovieData(item));
   $('.js-movie-result h4').html(results);
 }
@@ -328,6 +322,8 @@ function displayMovieMoreInfo() {
   $('.movie-more-info').html(renderMovieMoreInfo());
 }
 
+
+
 function handleFindOutMore(){
   $('.find-out-more').on('click', function() {
     const movieChosen = $('.movie-results.result-selected h4').html();
@@ -339,6 +335,7 @@ function handleFindOutMore(){
       handleCloseModal();
       displayMovieMoreInfo();
       displayRestaurantMoreInfo();
+      displayShowtimes();
       $('.js-select-error p').hide();
       const venueIDquery = $('result-selected').data('venueID');
       // give error paragraph if both aren't chosen
@@ -347,12 +344,44 @@ function handleFindOutMore(){
   }});
 }
 
+const theatres = [];
+function renderShowtimes(result){
+
+  // return `${result.dateTime}`;
+
+  const militaryTime = result.dateTime.slice(11);
+  
+  if (!(theatres.includes(`${result.theatre.name}`))) {
+
+
+    theatres.push(`${result.theatre.name}`);
+    return `
+    <p class='theatreName'>${result.theatre.name}</p>
+    <p class='showtimeTime'>${militaryTime}</p>
+    `;
+  } else {
+    return `<p class='showtimeTime'>${militaryTime}</p>`;
+  }
+  
+
+  
+}
+
+function displayShowtimes(){
+  const showtimesArr = $('.movie-results.result-selected').data('showtimes');
+  console.log(showtimesArr[0]);
+  const showtimes = showtimesArr.map((item) => renderShowtimes(item));
+  $('.showtimes').html(showtimes);
+  
+}
+
 //Closing the Modal
 function handleCloseModal(){
   $('span').on('click', function(){
     $('.modal').css('display', 'none');
   });
 }
+
 
 
 
