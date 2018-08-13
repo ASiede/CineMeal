@@ -2,17 +2,43 @@
 * {
 	box-sizing: border-box;
 }
+
+html {
+	height: 100%;
+
+}
+
 body {
-	background-color: white;
-	color: black;
+	background-color: black;
+	color: white;
 	text-align: center;
+	font-family: 'Lato', sans-serif;
+	background-image: url('https://getreelcinemas.com//wp-content/uploads/2015/02/Background-Narrow.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	/*'./images/Background-Narrow.jpg'*/
+	
 }
 header {
-	border: black solid 1px;
+	/*margin-top: 145px;*/
+	/*border: black solid 1px;*/
 	text-align: center;
-	background-color: #191919;
+	/*background-color: #191919;*/
 	color: white;
 
+}
+
+main {
+	margin-top: 80px;
+	font-size: 1.25em;
+	padding: 20px;
+}
+
+main button {
+	background-color: white;
+	margin-top: 30px;
 }
 
 /*****************************************
@@ -20,6 +46,9 @@ Form Elements
 *******************************************/
 form button {
 	margin: 20px 0px;
+	background-color: white;
+	margin-top: 30px;
+
 }
 
 .user-input [type='radio'] {
@@ -30,22 +59,26 @@ form button {
 
 .genre-radio-button {
 	display: inline-block;
-	padding-top:20px;
-	padding-bottom:20px;
-	background-color: #B0CDD9;
+	padding-top:15px;
+	padding-bottom:15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #1485CC;
+	/*background-color: rgba(255, 255, 255, 0.9);*/
 	margin: 5px;
-	min-width: 130px;
+	min-width: 100px;
 	/*min-height: 185px;*/
 	border-radius: 10%;
 	vertical-align: middle;
+	color: black;
 }
 
 .genre-selected {
-	border: 3px solid navy;
+	border: solid yellow 3px;
 }
 
 span {
-	font-size: 4em;
+	font-size: 3em;
 }
 
 
@@ -63,6 +96,15 @@ Form Elements after user inputs chosen
 	height: 50%;
 }
 
+.edit{
+	margin-top: 0px;
+}
+
+/*.choose-genre, .choose-location{
+	margin-bottom: 20px;
+	margin-top: 0px;
+}*/
+
 .edit, .submit {
 	display: block;
 	margin-left: auto;
@@ -74,28 +116,40 @@ Results Elements
 *******************************************/
 .movie-results, .restaurant-results {
 	border-radius: 5%;
-	height: 300px;
+	height: 280px;
 	overflow:hidden;
 	text-align: center;
 	margin: 5px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 
 }
 /*.restaurant-results h4 {
 	margin-top: 75%;
 }*/
 
-.movie-results h4 {
+.movie-results h4, .restaurant-results h4 {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
 .movie-results {
-	background-color: #BCC9A5; 
+	background-color: #0971B2; 
+}
+
+.movie-results img {
+	vertical-align: center;
+	max-width: 88%;
+}
+
+.movie-results, .restaurant-results {
+	
 }
 
 .restaurant-results {
-	background-color: #72A7C2;
+	background-color: #0971B2;
 }
+
 
 .movie-result-section, .restaurant-result-section {
 	width:45%;
@@ -110,11 +164,13 @@ Results Elements
 }
 
 .result-selected {
-	border: 3px solid navy;
+	border: 3px solid yellow;
 }
 
 .select-error {
 	color: red;
+	background-color: white;
+	display: inline-block;
 }
 
 .find-out-more {
@@ -142,7 +198,9 @@ Modal
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: white;
+    color: black;
+    /*background-color: #fefefe;*/
     margin: 15% auto; 
     padding: 20px;
     border: 1px solid #888;
@@ -163,13 +221,79 @@ Modal
     cursor: pointer;
 }
 
+.modal h3{
+	border: black solid 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #1485CC;
+	color: white;
+	margin-top: 40px;
+}
 
-/*colors
+.modal h4 {
+	text-decoration: underline;
+}
 
-#191919
-8C606D
-456575
-F19568
-6C855E
-F5BF66
-*/
+p.theatreName{
+	margin: 7px;
+}
+
+p.showtimeTime {
+	display: inline-block;
+	background-color: lightgray;
+	margin-left: 3px;
+	margin-right: 3px;
+	border-radius: 20%;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	padding: 5px;
+	border: solid black 1px;
+	font-size: .75em;
+}
+
+/*****************************************
+Media Queries
+*******************************************/
+
+
+
+@media only screen and (min-width: 435px) {
+	
+	main {
+		margin-top: 100px;
+	}
+
+	.movie-results, .restaurant-results {
+	border-radius: 5%;
+	height: 330px;
+	overflow:hidden;
+	text-align: center;
+	margin: 5px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+
+}
+
+	span {
+	font-size: 4em;
+	}
+}
+
+@media only screen and (min-width: 820px) {
+
+	span {
+	font-size: 6em;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

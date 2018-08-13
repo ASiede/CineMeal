@@ -24,8 +24,9 @@ function handlesPhotoData(data, index) {
   } else {
     restaurantData[index].description = `${data.response.venue.description}`;
   };
-  console.log(data.response.venue.hours.timeframes.map((item) => `${days} + ${open[0].renderedTime}`));
-  restaurantData[index].hours = `${data.response.venue.description}`
+
+  // console.log(data.response.venue.hours.timeframes.map((item) => `${response.venue.days} + ${open[0].renderedTime}`));
+  // restaurantData[index].hours = `${data.response.venue.description}`
 
     
 }
@@ -33,7 +34,7 @@ function handlesPhotoData(data, index) {
 function getRestaurantPhotos() {
   const requests = restaurantData.map(function(restaurant, index){
     const restaurantID = restaurantData[index].venue.id;
-    // return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);
+    return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesPhotoData);
   })
     $.when(...requests).done(() => {
     displayFOURSQUARESearchData();
@@ -91,7 +92,7 @@ let movieData = []
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'wvgp8npjcpddxq2daqde46z3',
+    api_key: 'nvvvccjun8w86gcpzw7apfhk',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback);
@@ -127,18 +128,18 @@ function renderMovieData(movieObj){
   return  `
   <div role='button' class='movie-results' data-summary='${movieObj.shortDescription}' data-showtimes='${showtimeObj}'>
     <h4>${movieObj.title}</h4>
-    <p>${movieObj.shortDescription}</p>
     <img src='${movieObj.img}' alt=''>
   </div>
  `; 
+
+ // <p>${movieObj.shortDescription}</p>
+
 }
 
 function displayMovieData(data){
   const results = movieData.map((item, index)=>renderMovieData(item));
   $('.js-movie-result h4').html(results);
 }
-
-
 
 // TMDB Pic
 
@@ -162,8 +163,8 @@ function displayTMDBSearchData(data) {
 // Handling FOURSQUARE API---Photo
 function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'CQW1ZTGV0JMZAOZKLJZ5SKDWHR54ZQAQP3ERGAASEVGBIJ0Z',
-    client_secret: '2GXXJC0MIY4VBFTIHABBWKNX4XPDKJVKQZAEJFIW5WBYGIGI',
+    client_id: 'LDU1IMFBFBXKY5H3U12DVVLQCZLBKWQXJRAMS0NZTJDFXRFT',
+    client_secret: 'FRM2LE0IBDDJTDTMASJOWAJBWV1UOKO432UDF5ZPVYRVBUWZ',
     v: '20180323'
   }
   return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index));
@@ -189,10 +190,11 @@ function renderRestaurantResult(result) {
   <div role='button' class='restaurant-results' data-description='${result.description}'>
     <h4>${result.venue.name}</h4>
     <p>${result.venue.location.address}</p>
-    <img src='${result.img}' alt=''>
+    <img src='${result.img}' alt=''> 
   </div>
   `;
 }
+
 
 function displayFOURSQUARESearchData() {
   const results = restaurantData.map((item, index)=>renderRestaurantResult(item));
@@ -326,6 +328,8 @@ function  renderMovieMoreInfo() {
   `;
 }
 
+
+
 function displayMovieMoreInfo() {
   $('.movie-more-info').html(renderMovieMoreInfo());
 }
@@ -371,7 +375,7 @@ function renderShowtimes(result){
     displayTime= "12";
   }
   displayTime += (minutes < 10) ? ":0" + minutes : ":" + minutes;  
-  displayTime += (hours >= 12) ? " P.M." : " A.M.";
+  displayTime += (hours >= 12) ? " PM" : " AM";
   
   while ( (theatres.length < 3)  || (theatres.includes(`${result.theatre.name}`))){
     if (!(theatres.includes(`${result.theatre.name}`))    ) {
