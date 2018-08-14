@@ -62,7 +62,7 @@
         <div class='chosen-section chosen-zip-wrapper'>
           <h2 class='choose-location'>STEP 2: Choose a location</h2>
           <label for="js-zip-code-query">Zip Code:</label>
-          <input class="js-zip-code-query" type="text" value='97214' required><br>
+          <input class="js-zip-code-query" type="text" pattern="[0-9]{5}" value='97214' required><br>
         </div>  
         
         <button class ='submit' type='submit'>Give me my suggestions!</button>
@@ -97,7 +97,6 @@
         <!-- <h2>Here are you results for your night out. Enjoy!</h2> -->
         <h3 class='movie'>Your Movie</h3>
         <div class='movie-more-info'>
-          
         </div>
         <h4>Showtimes</h4>
         <div class='showtimes'></div>  
