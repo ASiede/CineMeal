@@ -3,108 +3,94 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Dinner and a Movie</title>
+    <meta name="description" content="Application to help users choose recommended movies and restuarants based on user input">
+    <title>Dinner and a Movie Chooser</title>
     <link type="text/css" rel="stylesheet" href="normalize.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="main.css" rel="stylesheet" type="text/css" />
-
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>    
   </head>
   <body>
-    <header>
+    <header role="banner">
       <h1>Welcome to the Dinner and a Movie Chooser</h1>
-    </header role='banner'>
-    <main role='main' class='initial-page'>
+    </header>
+    <main role="main">
       <p>Can't decide what to do tonight? Interested in dinner and a movie but not sure which ones? 
       <p>We've got you covered.</p> 
-      <p>Just let us know a couple things and we will give you options for the perfect pairing.</p>
-      <button class='js-begin' type='submit'>Let's Begin</button>
+      <p>All YOU have to do is give us your movie GENRE preference and LOCATION.</p>
+      <p> WE will reccommend 3 movies out in theaters AND 3 complimentary restaurants in your area. Once you select one of each, we will give you all the details you need to enjoy!</p>
+      <button class="js-begin" type="submit">Let's Begin</button>
     </main>
-      
-    <section role='region' class='user-input'>
-      <form action="#" class="js-search-form" id= 'user-input' hidden>
-        <div class='chosen-section chosen-genre-wrapper'>
-          <h2 class='choose-genre'>STEP 1: Choose a movie genre</h2>
-          <div class='genre-radio-button'>
+    <section role="region" class="user-input">
+      <form action="#" class="js-search-form" id= "user-input" hidden>
+        <div class="chosen-section chosen-genre-wrapper">
+          <h2 class="choose-genre">STEP 1: Choose a movie genre</h2>
+          <div class="genre-radio-button">
             <label for="drama">
               <input type="radio" name="genre" id="drama" value="Drama" required><span>🎭</span><br>Drama
             </label>
           </div>    
-
-          <div class='genre-radio-button'>
+          <div class="genre-radio-button">
             <label for="comedy">
               <input type="radio" name="genre" id="comedy" value="Comedy"><span>🤡</span><br>Comedy
             </label>
           </div>
-
-          <div class='genre-radio-button'>
+          <div class="genre-radio-button">
             <label for="horror">
               <input type="radio" name="genre" id="horror" value="Horror"><span>😱</span><br>Horror
             </label>
           </div>
-          
-          <div class='genre-radio-button'>
+          <div class="genre-radio-button">
             <label for="romantic"><input type="radio" name="genre" id="romance" value="Fantasy"><span>😍</span><br>Romance
             </label>
           </div>
-          
-          <div class='genre-radio-button'>
+          <div class="genre-radio-button">
             <label for="family"><input type="radio" name="genre" id="family" value="Children"><span>👨‍👩‍👧‍👦</span><br>Family
             </label>
           </div>
-          
-          <div class='genre-radio-button'>
+          <div class="genre-radio-button">
             <label for="action"><input type="radio" name="genre" id="action" value="Action"><span>🏃‍♀️</span><br>Action
             </label>
           </div><br>
         </div>
-
-        <div class='chosen-section chosen-zip-wrapper'>
-          <h2 class='choose-location'>STEP 2: Choose a location</h2>
+        <div class="chosen-section chosen-zip-wrapper">
+          <h2 class="choose-location">STEP 2: Choose a location</h2>
           <label for="js-zip-code-query">Zip Code:</label>
-          <input class="js-zip-code-query" type="text" pattern="[0-9]{5}" value='97214' required><br>
+          <input class="js-zip-code-query" id="js-zip-code-query" type="text" pattern="[0-9]{5}" required><br>
         </div>  
-        
-        <button class ='submit' type='submit'>Give me my suggestions!</button>
-        <button type='click' class='edit' hidden>Edit Choices</button>	
+        <button class ="submit" type="submit">Give me my suggestions!</button>
+        <div class="error-section"></div>
+        <button type="click" class="edit" hidden>Edit Choices</button>	
       </form>
-
     </section>  
-    
-    <div class='results-section' aria-live="assertive" hidden>
-      <h3 class='js-results-header'>Here are your results. Choose your dinner and a movie to find out more info</h3>
-
-      <!-- <button class='random-choice' type=click>Take the wheel jesus</button><br> -->
-
+    <section role="region" class="results-section" aria-live="assertive" hidden>
+      <h3 class="js-results-header">Here are your results. Choose your top choice movie and your top choice restaurant and find out more info below</h3>
       <div class="js-movie-result movie-result-section">
-        <h3 class='js-results-header'>Movies</h3>
+        <h3 class="js-results-header">Movies</h3>
         <h4></h4>
-        
       </div>
       <div class="js-restaurant-result restaurant-result-section">
-        <h3 class='js-results-header'>Restaurants</h3>
-        <h4 class='restaurant-name'></h2>
-        <div class='restaurant-photo'></div>
+        <h3 class="js-results-header">Restaurants</h3>
+        <h4 class="restaurant-name"></h2>
+        <div class="restaurant-photo"></div>
       </div>
-    </div>  
-    <div class='js-select-error'></div>
-    <button class='find-out-more' type='click' hidden>Find Out More</button>  
-   <!--  <button class='restart' type='reset' form='user-input' hidden>Restart</button> -->
-
-    <div class='modal'>
-      <div class='modal-content'>
-        <span class='close'>&times;</span>
-        <!-- <h2>Here are you results for your night out. Enjoy!</h2> -->
-        <h3 class='movie'>Your Movie</h3>
-        <div class='movie-more-info'>
+    </section>  
+    <div class="js-select-error"></div>
+    <button class="find-out-more" type="click" hidden>Find Out More</button>  
+    <section role ="region" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 class="movie">Your Movie</h3>
+        <div class="movie-more-info">
         </div>
         <h4>Showtimes</h4>
-        <div class='showtimes'></div>  
-        <h3 class='restaurant'>Your Restaurant</h3>
-        <div class='restaurant-more-info'></div>
+        <div class="showtimes"></div>  
+        <h3 class="restaurant">Your Restaurant</h3>
+        <div class="restaurant-more-info"></div>
+        <h4>Hours</h4>
+        <div class="restaurant-hours"></div>
       </div>  
-    </div>
-
+    </section>
     <script src="index.js"></script>
   </body>
 </html>

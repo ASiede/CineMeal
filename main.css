@@ -5,7 +5,6 @@
 
 html {
 	height: 100%;
-
 }
 
 body {
@@ -17,28 +16,35 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-
-	/*'./images/Background-Narrow.jpg'*/
-	
 }
-header {
-	/*margin-top: 145px;*/
-	/*border: black solid 1px;*/
-	text-align: center;
-	/*background-color: #191919;*/
-	color: white;
 
+header {
+	font-size: 14px;
+	text-align: center;
+	color: white;
 }
 
 main {
-	margin-top: 80px;
-	font-size: 1.25em;
+	margin-top: 35px;
+	font-size: 19px;
 	padding: 20px;
 }
 
+button {
+	background-color: darkred;
+	border: solid 2px black;
+	color: white;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+button:hover {
+	transition: .3s;
+	transform: scale(1.2);
+}
+
 main button {
-	background-color: white;
-	margin-top: 30px;
+	margin-top: 15px;
 }
 
 /*****************************************
@@ -46,9 +52,21 @@ Form Elements
 *******************************************/
 form button {
 	margin: 20px 0px;
-	background-color: white;
 	margin-top: 30px;
+}
 
+form {
+	margin-top: 60px;
+}
+
+h2.choose-genre, h2.choose-location {
+	padding-left: 15px;
+	padding-right: 15px;
+	font-size: 22px;
+}
+
+.submit {
+	font-size: 18px;
 }
 
 .user-input [type='radio'] {
@@ -64,23 +82,27 @@ form button {
 	padding-left: 10px;
 	padding-right: 10px;
 	background-color: #1485CC;
-	/*background-color: rgba(255, 255, 255, 0.9);*/
 	margin: 5px;
 	min-width: 100px;
-	/*min-height: 185px;*/
 	border-radius: 10%;
 	vertical-align: middle;
 	color: black;
+}
+
+span {
+	font-size: 3em;
+}
+.genre-radio-button:hover, .genre-radio-button > * {
+	cursor: pointer;
 }
 
 .genre-selected {
 	border: solid yellow 3px;
 }
 
-span {
-	font-size: 3em;
+.chosen-zip-wrapper input {
+	margin-left: 5px;
 }
-
 
 /*****************************************
 Form Elements after user inputs chosen
@@ -92,20 +114,26 @@ Form Elements after user inputs chosen
 	padding-right: 20px;
 }
 
-.inputs-chosen.chosen-genre-wrapper{
-	height: 50%;
-}
-
 .edit{
-	margin-top: 0px;
+	margin-top: 15px;
 }
 
-/*.choose-genre, .choose-location{
-	margin-bottom: 20px;
-	margin-top: 0px;
-}*/
+.zipcode-chosen {
+	display: inline-block;
+	padding-top:15px;
+	padding-bottom:15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #1485CC;
+	margin: 5px;
+	min-width: 100px;
+	border-radius: 10%;
+	color: black;
+	border: solid yellow 3px;
+	height: 109px;
+}
 
-.edit, .submit {
+.edit, .submit{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -122,19 +150,12 @@ Results Elements
 	margin: 5px;
 	padding-bottom: 0px;
 	margin-bottom: 0px;
-
+	background-color: #0971B2;
 }
-/*.restaurant-results h4 {
-	margin-top: 75%;
-}*/
 
 .movie-results h4, .restaurant-results h4 {
 	margin-top: 10px;
 	margin-bottom: 10px;
-}
-
-.movie-results {
-	background-color: #0971B2; 
 }
 
 .movie-results img {
@@ -142,19 +163,11 @@ Results Elements
 	max-width: 88%;
 }
 
-.movie-results, .restaurant-results {
-	
-}
-
-.restaurant-results {
-	background-color: #0971B2;
-}
-
-
 .movie-result-section, .restaurant-result-section {
 	width:45%;
 	display: inline-block;
 	max-width: 300px;
+	vertical-align: top;
 }
 
 .results-section {
@@ -168,13 +181,19 @@ Results Elements
 }
 
 .select-error {
-	color: red;
+	color: black;
 	background-color: white;
+	border: 2px solid red;
+	padding: 3px;
 	display: inline-block;
 }
 
 .find-out-more {
 	margin-bottom: 40px;
+}
+
+.restaurant-image {
+	max-width: 88%;
 }
 
 /*****************************************
@@ -187,9 +206,6 @@ Modal
     z-index: 1; 
    	left:0;
    	top:0;
-   /* left: 50%;
-    top: 50%;*/
-    /*transform: translate(-50%, -50%);*/
     width: 100%; 
     height: 100%; 
     overflow: auto; 
@@ -200,7 +216,6 @@ Modal
 .modal-content {
     background-color: white;
     color: black;
-    /*background-color: #fefefe;*/
     margin: 15% auto; 
     padding: 20px;
     border: 1px solid #888;
@@ -208,7 +223,7 @@ Modal
 }
 
 .close {
-    color: #aaa;
+    color: #4F4F4F;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -251,39 +266,99 @@ p.showtimeTime {
 	font-size: .75em;
 }
 
+.restaurant-hours{
+	display: block;
+}
+
 /*****************************************
 Media Queries
 *******************************************/
 
+/*Mobile Landscape*/
+@media only screen and (min-width: 321px) and (max-width: 732px) and (orientation: landscape) {
+	h1 {
+		margin-top: 5px;
+	}
 
+	form {
+		margin-top: 0px;
+	}
 
-@media only screen and (min-width: 435px) {
-	
-	main {
-		margin-top: 100px;
+	main{
+		margin-top: 0px;
 	}
 
 	.movie-results, .restaurant-results {
-	border-radius: 5%;
-	height: 330px;
-	overflow:hidden;
-	text-align: center;
-	margin: 5px;
-	padding-bottom: 0px;
-	margin-bottom: 0px;
-
+	min-height: 330px;
+	}
+	
 }
 
+
+/*Medium Laptop View*/
+@media only screen and (min-width: 545px) {
+	main {
+		margin-top: 50px;
+		padding: 60px;
+	}
+
+	.chosen-section {
+		margin-top: 0px;
+	}
+	
+	form {
+		margin-top: 90px;
+	}
+
+	.movie-results, .restaurant-results {
+		border-radius: 5%;
+		height: 330px;
+		overflow:hidden;
+		text-align: center;
+		margin: 5px;
+		padding-bottom: 0px;
+		margin-bottom: 0px;
+	}
+
 	span {
-	font-size: 4em;
+		font-size: 4em;
+	}
+
+	.zipcode-chosen {
+		height: 127px;
+	}
+
+	.chosen-zip-wrapper input {
+		margin-top: 20px;
+		margin-bottom: 20px;
 	}
 }
 
-@media only screen and (min-width: 820px) {
+/*Wide Laptop View*/
+@media only screen and (min-width: 882px) {
+	main {
+		margin-top: 70px;
+	}
+
+	h1 {
+		font-size: 40px;
+	}
+		
+	main p {
+		padding-left: 150px;
+		padding-right: 150px;
+		margin-bottom: 30px;
+	}
 
 	span {
-	font-size: 6em;
+		font-size: 6em;
 	}
+
+	.zipcode-chosen {
+		height: 164px;
+		width: 122px;
+	}
+
 }
 
 
