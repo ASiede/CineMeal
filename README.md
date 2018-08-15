@@ -1,7 +1,7 @@
 # Dinner And A Movie Chooser
 
 ## Live App
-- [Live Demo](https://mylink)
+- [Live Demo](https://asiede.github.io/Dinner-And-A-Movie/)
 
 ## What it does
 A tool that suggests a several recommendations for a movie out in theaters and a complimentary restaurant for the user. Suggestions are are based on the user's movie genre preference and location. After a user selects their top choice of a movie and a restaurant, additional information is provided.
