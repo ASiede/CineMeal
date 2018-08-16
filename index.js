@@ -37,7 +37,7 @@ function createDateMonthAgo() {
 function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
   $('header').html("<h1>Dinner and a Movie Chooser</h1>");
-  $('main').prop('hidden', true);
+  $('.explaination').prop('hidden', true);
   $('.edit').hide();
 }
 
@@ -69,7 +69,7 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
   .fail(function(jqXHR, textStatus, errorThrown){
     //error handling if zip code is not valid zip code
     if (textStatus == 'parsererror'){
-      $('.error-section').html("<p class='select-error'>The zipcode you have selected is not returning any results. It may be an invalid zipcode.Please try again</p>");
+      $('.error-section').html("<p class='select-error'>The zipcode you have selected is not returning any results. It may be an invalid zipcode.Please Edit and try again</p>");
     } else if (textStatus== 'error'){
       //error handling if api quota limit has been reached
       $('.error-section').html("<p class='select-error'>Limit has been reached. Try again later for movie results</p>");
@@ -206,7 +206,7 @@ function showResultsinDOM(zipCode) {
   $('.chosen-section .choose-genre').html('Genre:');
   $('.chosen-section .choose-location').html('Location:');
   $("label[for='js-zip-code-query']").hide();
-  $('.js-zip-code-query').replaceWith(`<div class='zipcode-chosen'><p>${zipCode}</p></div>`);
+  $('.js-zip-code-query').replaceWith(`<div class='zipcode-chosen'><span>🏙️</span><p>${zipCode}</p></div>`);
   $('.js-search-form button.submit').hide();
   $('.edit').show();
   $('.find-out-more').prop('hidden', false);
@@ -217,6 +217,7 @@ function watchSubmit() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
     //Restaurant Results
+    //Check for dynamically added genre button to be selected
     let genreQueryTarget = $(event.currentTarget).find("input[type='radio']:checked");
     const genre = genreQueryTarget.val();
     let zipCodeQueryTarget = $(event.currentTarget).find('.js-zip-code-query');
@@ -226,6 +227,7 @@ function watchSubmit() {
     //Movie Results
     getDataFromGRACENOTEApi(zipCode, handleMovieData);
     showResultsinDOM(zipCode);
+    
   });
 }
 
@@ -246,13 +248,14 @@ function handleEditChoices(){
   $('.edit').on('click', function(event){
     event.preventDefault();
     $('.genre-radio-button').not('.genre-selected').show();
+    $('.genre-radio-button').removeClass('genre-selected');
     $('.js-search-form button.submit').show();
     $('.chosen-zip-wrapper').html(`
         <h2 class='choose-location'>Location</h2>
           <label for="js-zip-code-query">Zip Code:</label>
           <input class="js-zip-code-query" id="js-zip-code-query" type="text" required><br>`)
     $('.edit').hide();
-    $('.error-section').hide(); 
+    $('.error-section').hide();
   });
 }
 

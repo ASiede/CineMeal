@@ -15,82 +15,84 @@
       <h1>Welcome to the Dinner and a Movie Chooser</h1>
     </header>
     <main role="main">
-      <p>Can't decide what to do tonight? Interested in dinner and a movie but not sure which ones? 
-      <p>We've got you covered.</p> 
-      <p>All YOU have to do is give us your movie GENRE preference and LOCATION.</p>
-      <p> WE will reccommend 3 movies out in theaters AND 3 complimentary restaurants in your area. Once you select one of each, we will give you all the details you need to enjoy!</p>
-      <button class="js-begin" type="submit">Let's Begin</button>
-    </main>
-    <section role="region" class="user-input">
-      <form action="#" class="js-search-form" id= "user-input" hidden>
-        <div class="chosen-section chosen-genre-wrapper">
-          <h2 class="choose-genre">STEP 1: Choose a movie genre</h2>
-          <div class="genre-radio-button">
-            <label for="drama">
-              <input type="radio" name="genre" id="drama" value="Drama" required><span>🎭</span><br>Drama
-            </label>
-          </div>    
-          <div class="genre-radio-button">
-            <label for="comedy">
-              <input type="radio" name="genre" id="comedy" value="Comedy"><span>🤡</span><br>Comedy
-            </label>
+      <section class="explaination" role="region">
+        <p>Can't decide what to do tonight? Interested in dinner and a movie but not sure which ones? 
+        <p>We've got you covered.</p> 
+        <p>All YOU have to do is give us your movie GENRE preference and LOCATION.</p>
+        <p> WE will reccommend 3 movies out in theaters AND 3 complimentary restaurants in your area. Once you select one of each, we will give you all the details you need to enjoy!</p>
+        <button class="js-begin" type="submit">Let's Begin</button>
+      </section>
+      <section role="region" class="user-input" aria-live="polite">
+        <form action="#" class="js-search-form" id= "user-input" hidden>
+          <div class="chosen-section chosen-genre-wrapper">
+            <h2 class="choose-genre">STEP 1: Choose a movie genre</h2>
+            <div class="genre-radio-button">
+              <label for="drama">
+                <input type="radio" name="genre" id="drama" value="Drama" required><span>🎭</span><br>Drama
+              </label>
+            </div>    
+            <div class="genre-radio-button">
+              <label for="comedy">
+                <input type="radio" name="genre" id="comedy" value="Comedy" required><span>🤡</span><br>Comedy
+              </label>
+            </div>
+            <div class="genre-radio-button">
+              <label for="horror">
+                <input type="radio" name="genre" id="horror" value="Horror" required><span>😱</span><br>Horror
+              </label>
+            </div>
+            <div class="genre-radio-button">
+              <label for="romantic"><input type="radio" name="genre" id="romance" value="Fantasy" required><span>😍</span><br>Romance
+              </label>
+            </div>
+            <div class="genre-radio-button">
+              <label for="family"><input type="radio" name="genre" id="family" value="Children" required><span>👨‍👩‍👧‍👦</span><br>Family
+              </label>
+            </div>
+            <div class="genre-radio-button">
+              <label for="action"><input type="radio" name="genre" id="action" value="Action" required><span>🏃‍♀️</span><br>Action
+              </label>
+            </div><br>
           </div>
-          <div class="genre-radio-button">
-            <label for="horror">
-              <input type="radio" name="genre" id="horror" value="Horror"><span>😱</span><br>Horror
-            </label>
-          </div>
-          <div class="genre-radio-button">
-            <label for="romantic"><input type="radio" name="genre" id="romance" value="Fantasy"><span>😍</span><br>Romance
-            </label>
-          </div>
-          <div class="genre-radio-button">
-            <label for="family"><input type="radio" name="genre" id="family" value="Children"><span>👨‍👩‍👧‍👦</span><br>Family
-            </label>
-          </div>
-          <div class="genre-radio-button">
-            <label for="action"><input type="radio" name="genre" id="action" value="Action"><span>🏃‍♀️</span><br>Action
-            </label>
-          </div><br>
+          <div class="chosen-section chosen-zip-wrapper">
+            <h2 class="choose-location">STEP 2: Choose a location</h2>
+            <label for="js-zip-code-query">Zip Code:</label>
+            <input class="js-zip-code-query" id="js-zip-code-query" type="text" pattern="[0-9]{5}" required><br>
+          </div>  
+          <button class ="submit" type="submit">Give me my suggestions!</button>
+          <div class="error-section"></div>
+          <button type="click" class="edit" hidden>Edit Choices</button>	
+        </form>
+      </section>  
+      <section role="region" class="results-section" aria-live="assertive" hidden>
+        <h3 class="js-results-header">Here are your results. Choose your top choice movie and your top choice restaurant and find out more info below</h3>
+        <div class="js-movie-result movie-result-section">
+          <h3 class="js-results-header">Movies</h3>
+          <h4></h4>
         </div>
-        <div class="chosen-section chosen-zip-wrapper">
-          <h2 class="choose-location">STEP 2: Choose a location</h2>
-          <label for="js-zip-code-query">Zip Code:</label>
-          <input class="js-zip-code-query" id="js-zip-code-query" type="text" pattern="[0-9]{5}" required><br>
+        <div class="js-restaurant-result restaurant-result-section">
+          <h3 class="js-results-header">Restaurants</h3>
+          <h4 class="restaurant-name"></h2>
+          <div class="restaurant-photo"></div>
+        </div>
+      </section>  
+      <div class="js-select-error"></div>
+      <button class="find-out-more" type="click" hidden>Find Out More</button>  
+      <section role ="region" class="modal" aria-live="polite">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h3 class="movie">Your Movie</h3>
+          <div class="movie-more-info">
+          </div>
+          <h4>Showtimes</h4>
+          <div class="showtimes"></div>  
+          <h3 class="restaurant">Your Restaurant</h3>
+          <div class="restaurant-more-info"></div>
+          <h4>Hours</h4>
+          <div class="restaurant-hours"></div>
         </div>  
-        <button class ="submit" type="submit">Give me my suggestions!</button>
-        <div class="error-section"></div>
-        <button type="click" class="edit" hidden>Edit Choices</button>	
-      </form>
-    </section>  
-    <section role="region" class="results-section" aria-live="assertive" hidden>
-      <h3 class="js-results-header">Here are your results. Choose your top choice movie and your top choice restaurant and find out more info below</h3>
-      <div class="js-movie-result movie-result-section">
-        <h3 class="js-results-header">Movies</h3>
-        <h4></h4>
-      </div>
-      <div class="js-restaurant-result restaurant-result-section">
-        <h3 class="js-results-header">Restaurants</h3>
-        <h4 class="restaurant-name"></h2>
-        <div class="restaurant-photo"></div>
-      </div>
-    </section>  
-    <div class="js-select-error"></div>
-    <button class="find-out-more" type="click" hidden>Find Out More</button>  
-    <section role ="region" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3 class="movie">Your Movie</h3>
-        <div class="movie-more-info">
-        </div>
-        <h4>Showtimes</h4>
-        <div class="showtimes"></div>  
-        <h3 class="restaurant">Your Restaurant</h3>
-        <div class="restaurant-more-info"></div>
-        <h4>Hours</h4>
-        <div class="restaurant-hours"></div>
-      </div>  
-    </section>
+      </section>
+    </main>
     <script src="index.js"></script>
   </body>
 </html>

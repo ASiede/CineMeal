@@ -24,7 +24,7 @@ header {
 	color: white;
 }
 
-main {
+.explaination {
 	margin-top: 35px;
 	font-size: 19px;
 	padding: 20px;
@@ -41,9 +41,10 @@ button {
 button:hover {
 	transition: .3s;
 	transform: scale(1.2);
+	cursor: pointer;
 }
 
-main button {
+.explaination button {
 	margin-top: 15px;
 }
 
@@ -89,15 +90,25 @@ h2.choose-genre, h2.choose-location {
 	color: black;
 }
 
-span {
+.genre-radio-button span, .zipcode-chosen span {
 	font-size: 3em;
 }
+
+.zipcode-chosen {
+	cursor: default;
+}
+
+.zipcode-chosen p {
+	margin:0px;
+}
+
 .genre-radio-button:hover, .genre-radio-button > * {
 	cursor: pointer;
 }
 
 .genre-selected {
 	border: solid yellow 3px;
+	pointer-events: none;
 }
 
 .chosen-zip-wrapper input {
@@ -131,6 +142,7 @@ Form Elements after user inputs chosen
 	color: black;
 	border: solid yellow 3px;
 	height: 109px;
+	vertical-align: middle;
 }
 
 .edit, .submit{
@@ -151,6 +163,7 @@ Results Elements
 	padding-bottom: 0px;
 	margin-bottom: 0px;
 	background-color: #0971B2;
+	cursor: pointer;
 }
 
 .movie-results h4, .restaurant-results h4 {
@@ -161,6 +174,8 @@ Results Elements
 .movie-results img {
 	vertical-align: center;
 	max-width: 88%;
+	max-height: 85%;
+
 }
 
 .movie-result-section, .restaurant-result-section {
@@ -284,7 +299,7 @@ Media Queries
 		margin-top: 0px;
 	}
 
-	main{
+	.explaination{
 		margin-top: 0px;
 	}
 
@@ -297,7 +312,7 @@ Media Queries
 
 /*Medium Laptop View*/
 @media only screen and (min-width: 545px) {
-	main {
+	.explaination {
 		margin-top: 50px;
 		padding: 60px;
 	}
@@ -320,7 +335,7 @@ Media Queries
 		margin-bottom: 0px;
 	}
 
-	span {
+	.genre-radio-button span, .zipcode-chosen span {
 		font-size: 4em;
 	}
 
@@ -336,7 +351,7 @@ Media Queries
 
 /*Wide Laptop View*/
 @media only screen and (min-width: 882px) {
-	main {
+	.explaination {
 		margin-top: 70px;
 	}
 
@@ -344,13 +359,13 @@ Media Queries
 		font-size: 40px;
 	}
 		
-	main p {
+	.explaination p {
 		padding-left: 150px;
 		padding-right: 150px;
 		margin-bottom: 30px;
 	}
 
-	span {
+	.genre-radio-button span, .zipcode-chosen span {
 		font-size: 6em;
 	}
 
