@@ -36,8 +36,8 @@ function createDateMonthAgo() {
 // Beginning the app
 function renderBeginResults() {
   $('.js-search-form').prop('hidden', false);
-  $('header').html("<h1>Dinner and a Movie Chooser</h1>");
-  $('.explaination').prop('hidden', true);
+  $('header').html("<h1>CineMeal</h1>");
+  $('.explanation').prop('hidden', true);
   $('.edit').hide();
 }
 
@@ -62,7 +62,7 @@ function getDataFromTMDBApi(movieTitle, index, callback) {
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'nvvvccjun8w86gcpzw7apfhk',
+    api_key: 'dtcx3naax35vybvyy84zacm9',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback)
@@ -121,8 +121,8 @@ function renderMovieData(movieObj){
   // Handling FOURSQUARE API---Photo
 function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
   const query = {
-    client_id: 'JOATRFAR3HQYB2TSPI3MY03ZCIJI0QW4GMPXVCYVPMVJ40WR',
-    client_secret: 'Z0RXLVYULUQVJ0FPYT10NJNFAHZ0NUAUOLWZJPEVJNVJZBQC',
+    client_id: 'LDU1IMFBFBXKY5H3U12DVVLQCZLBKWQXJRAMS0NZTJDFXRFT',
+    client_secret: 'YINO3OLPKLHIZFUP1NQ1HJG03EUBTWI5AV0DZIIWINSYA5DD',
     v: '20180323'
   }
   return $.getJSON(FOURSQUARE_VENUE_SEARCH_URL+`${restaurantID}`, query, (data) => callback(data, index))
@@ -135,8 +135,8 @@ function getDataFromFOURSQUAREVENUEApi(restaurantID, index, callback){
 // Handling FOURSQUARE API---Name
 function getDataFromFOURSQUAREApi(zipCode, restaurantCatagory, callback){
   const query = {
-    client_id: 'K4BJWWLZMXPCS3KRBNRPCCDGAGSIZ4L4V24EIRE0H4ZVBHGD',
-    client_secret: 'AOIV5T1GDOAD412N4O53TMOOCDM15NWACGWTVVZHEB3DXGSS',
+    client_id: 'LDU1IMFBFBXKY5H3U12DVVLQCZLBKWQXJRAMS0NZTJDFXRFT',
+    client_secret: 'YINO3OLPKLHIZFUP1NQ1HJG03EUBTWI5AV0DZIIWINSYA5DD',
     near: `${zipCode}`,
     query: `restaurant, ${restaurantCatagory}`,
     v: '20180323',
@@ -247,6 +247,7 @@ function highlightChosenGenre(){
 function handleEditChoices(){
   $('.edit').on('click', function(event){
     event.preventDefault();
+    $('form')[0].reset();
     $('.genre-radio-button').not('.genre-selected').show();
     $('.genre-radio-button').removeClass('genre-selected');
     $('.js-search-form button.submit').show();
