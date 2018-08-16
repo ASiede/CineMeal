@@ -62,7 +62,7 @@ function getDataFromTMDBApi(movieTitle, index, callback) {
 function getDataFromGRACENOTEApi(zipCode, callback) {
   const query = {
     startDate: `${ISODate}`,
-    api_key: 'dtcx3naax35vybvyy84zacm9',
+    api_key: 'wvgp8npjcpddxq2daqde46z3',
     zip: `${zipCode}`
   }
   $.getJSON(GRACENOTE_SEARCH_URL, query, callback)
