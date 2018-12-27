@@ -70,7 +70,7 @@ function getDataFromGRACENOTEApi(zipCode, callback) {
     //error handling if zip code is not valid zip code
     if (textStatus == 'parsererror'){
       $('.error-section').html("<p class='select-error'>The zipcode you have selected is not returning any results. It may be an invalid zipcode.Please Edit and try again</p>");
-    } else if (textStatus== 'error'){
+    } else if (textStatus == 'error'){
       //error handling if api quota limit has been reached
       $('.error-section').html("<p class='select-error'>Limit has been reached. Try again later for movie results</p>");
     }
@@ -84,6 +84,10 @@ function handleMovieData(data){
 }
 
 function getMoviePhotos() {
+  //if no movies are available in genre
+  if (movieData.length < 1) {
+    $('.error-section').html("<p class='select-error'>Sorry, there are no movies in that genre playing near you. Try another genre.</p>");
+  }
   const requests = movieData.map(function(movie, index){
     const movieTitle = movieData[index].title;
     return getDataFromTMDBApi(movieTitle, index, handlesMoviePhotoData);})
@@ -157,12 +161,12 @@ function getRestaurantPhotos() {
     return getDataFromFOURSQUAREVENUEApi(restaurantID, index, handlesVenueData);
   })
     $.when(...requests).done(() => {
-    displayFOURSQUARESearchData();
+      displayFOURSQUARESearchData();
   }) 
 }
 
 function handlesVenueData(data, index) {
-  restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}100x100${data.response.venue.bestPhoto.suffix}`;
+  restaurantData[index].img = `${data.response.venue.bestPhoto.prefix}300x500${data.response.venue.bestPhoto.suffix}`;
   if (data.response.venue.hours !== undefined) {
     restaurantData[index].hours = data.response.venue.hours.timeframes.map((hourInfo) => renderHours(hourInfo));
   } else {
