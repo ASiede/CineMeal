@@ -9,19 +9,19 @@ A tool that suggests several recommendations for movies currently out in theater
 ## What it looks like
 Landing Page:
 
-![Landing Page](screenshots/landing-page.png)
+![Landing Page](images/landing-page.png)
 
 User preference selection:
 
-![Preference selection](screenshots/preference-selection.png)
+![Preference selection](images/preference-selection.png)
 
 Results:
 
-![Results](screenshots/results.png)
+![Results](images/results.png)
 
 More info section:
 
-![More Info](screenshots/more-info.png)
+![More Info](images/more-info.png)
 
 ## How it is built
 ### Front End
